@@ -1,26 +1,46 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Container from './containers/Container'
+import Navigation from './components/Navigation'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const URL = 'http://localhost:3000/products/'
+
+class App extends React.Component {
+
+  state = {
+    allProductsData: []
+  }
+
+  componentDidMount(){
+    fetch(URL)
+    .then(response => response.json())
+    .then(data => {
+      this.setState({
+        allProductsData: data
+      })
+    })
+  }
+
+  // listData = (data) => {
+  //   data.map(singleData => {
+  //     console.log(singleData)
+  //   })
+  // }
+
+
+  render(){
+    return (
+      <div className="App">
+        <header className='App-header' >
+          <Navigation />
+        </header>
+  
+          <Container allProducts={this.state.allProductsData}/>
+          
+      </div>
+    )
+  }
+
 }
 
 export default App;
