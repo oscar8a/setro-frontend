@@ -9,8 +9,8 @@ const ProductCollection = (props) => {
     <Fragment>
       <h3> this is the Product Collection</h3>
       <CardDeck fluid>
-        <Row>
-      {props.allProducts.map(singleProduct => <Col><Product product={singleProduct} key={singleProduct.id} /></Col>)}
+        <Row noGutters>
+      {props.allProducts.map(singleProduct => <Col md={3}><Product product={singleProduct} key={singleProduct.id} /></Col>)}
         </Row>
 
       </CardDeck>

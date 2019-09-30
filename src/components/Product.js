@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import Card from 'react-bootstrap/Card'
+import Button from 'react-bootstrap/Button'
 
 const Product = (props) => {
 
@@ -30,7 +31,7 @@ const Product = (props) => {
 
     </div> */}
 
-    <Card>
+    <Card class='card'bg="success">
     <Card.Body>
       <Card.Title>{props.product.species}</Card.Title>
       <Card.Text>
@@ -39,7 +40,7 @@ const Product = (props) => {
         {props.product.origin} | {props.product.country}
       </Card.Text>
     </Card.Body>
-
+      <Button variant="light"> ADD TO <span role='img' aria-label="cart">🛒</span></Button>
     </Card>
   </Fragment>
 
