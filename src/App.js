@@ -24,6 +24,7 @@ class App extends React.Component {
   }
 
   handleMoreButton = () => {
+    console.log("CLICKING BUTTON")
     this.setState({
       idx: this.state.idx + 4
     })

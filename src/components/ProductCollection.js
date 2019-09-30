@@ -15,7 +15,7 @@ const ProductCollection = (props) => {
 
       </CardDeck>
 
-      <Button onClick={props.handleMoreButton}> See More... </Button>
+      <Button onClick={props.handleMoreButton}> See More...  </Button>
      
     </Fragment>
   )
