@@ -1,6 +1,7 @@
 import React from 'react'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import { withRouter } from 'react-router-dom';
 
 class Signup extends React.Component {
 
@@ -66,7 +67,6 @@ class Signup extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e.target.value)
 
     let formData = {
       first_name: this.state.first_name,
@@ -82,8 +82,21 @@ class Signup extends React.Component {
   }
 
   sendFormData = (data) => {
-    console.log(data)
-    console.log(this.state)
+
+    fetch('http://localhost:3000/users/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        ...data
+      })
+    })
+    .then(response => response.json())
+    .then(resp => console.log)
+
+    this.props.history.push('/');
   }
 
   
@@ -95,7 +108,6 @@ class Signup extends React.Component {
     return <div className="signupform">
       <h1> This is the Signup Page </h1>
       <form onSubmit={this.handleSubmit}>
-      {/* <Form> */}
         <Form.Row>
           <Form.Group>
             <Form.Label>First Name: </Form.Label>
@@ -150,10 +162,9 @@ class Signup extends React.Component {
         <Button variant="primary" type="submit">
           Submit
         </Button>
-      {/* </Form> */}
       </form>
     </div>
   }
 
 }
-export default Signup
+export default withRouter(Signup);

@@ -12,16 +12,16 @@ class Navigation extends React.Component {
   render(){
     return <Navbar variant="dark">
 
-      <Navbar.Brand href="#home">🌲🌰 Seeds Store 🌰🌲</Navbar.Brand>
+      <Navbar.Brand href="/"><span role='img' aria-label="pine and a nut">🌲🌰</span> Seeds Store <span role='img' aria-label="pine and a nut">🌲🌰</span></Navbar.Brand>
         <Nav className="mr-auto">
-          <Nav.Link href="#home">Home</Nav.Link>
+          <Nav.Link href="/">Home</Nav.Link>
         </Nav>
         &nbsp;&nbsp;&nbsp;
         <Nav>
           <ButtonToolbar>
             <Button variant="light"><Link to={"/signup"} >Sign Up</Link></Button>
             &nbsp;&nbsp;&nbsp;
-            <Button variant="light">Login</Button>
+            <Button variant="light"><Link to={"/login"} >Log In</Link></Button>
           </ButtonToolbar>
         </Nav>
 

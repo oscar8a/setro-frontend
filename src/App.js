@@ -2,7 +2,6 @@ import React from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from './containers/Container'
-import Navigation from './components/Navigation'
 
 const URL = 'http://localhost:3000/products/'
 
@@ -10,6 +9,7 @@ class App extends React.Component {
 
   state = {
     allProductsData: [],
+    idx: 0,
     searchTerm: ""
   }
 
@@ -23,11 +23,17 @@ class App extends React.Component {
     })
   }
 
-  // listData = (data) => {
-  //   data.map(singleData => {
-  //     console.log(singleData)
-  //   })
-  // }
+  handleMoreButton = () => {
+    this.setState({
+      idx: this.state.idx + 4
+    })
+  }
+
+  getAllData = () => {
+    let data = this.state.allProductsData.slice(this.state.idx, this.state.idx + 20)
+
+    return data
+  }
 
   // handleChange = event => {
   //   this.setState({ searchTerm: event.target.value });
@@ -55,13 +61,7 @@ class App extends React.Component {
 
     return (
       <div className="App">
-        <header className='App-header' >
-          <Navigation />
-        </header>
-        
-  
-          <Container allProducts={this.state.allProductsData}/>
-          
+          <Container allProducts={this.getAllData()} handleMoreButton={this.handleMoreButton}/>
       </div>
     )
   }
