@@ -8,7 +8,7 @@ class Container extends React.Component {
 
       <h2>This is the Container</h2>
 
-      <ProductCollection allProducts={this.props.allProducts} handleMoreButton={this.props.handleMoreButton}/>
+      <ProductCollection allProducts={this.props.allProducts} addToCart = {this.props.addToCart} handleMoreButton={this.props.handleMoreButton}/>
 
     </div>
 

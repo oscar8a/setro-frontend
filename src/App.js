@@ -62,7 +62,7 @@ class App extends React.Component {
 
     return (
       <div className="App">
-          <Container allProducts={this.getAllData()} handleMoreButton={this.handleMoreButton}/>
+          <Container addToCart={this.props.addToCart} allProducts={this.getAllData()} handleMoreButton={this.handleMoreButton}/>
       </div>
     )
   }

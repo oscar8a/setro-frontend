@@ -10,7 +10,7 @@ const ProductCollection = (props) => {
       <h3> this is the Product Collection</h3>
       <CardDeck fluid>
         <Row noGutters>
-      {props.allProducts.map(singleProduct => <Col md={3}><Product product={singleProduct} key={singleProduct.id} /></Col>)}
+      {props.allProducts.map(singleProduct => <Col md={3}><Product addToCart={props.addToCart} product={singleProduct} key={singleProduct.id} /></Col>)}
         </Row>
 
       </CardDeck>
