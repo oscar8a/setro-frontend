@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from './containers/Container'
+import Login from './components/Login'
 
 const URL = 'http://localhost:3000/products/'
 
@@ -10,7 +11,22 @@ class App extends React.Component {
   state = {
     allProductsData: [],
     idx: 0,
-    searchTerm: ""
+    searchTerm: "",
+    loggedInUserId: null
+  }
+
+  isLoggedIn(){
+    return !!this.state.loggedInUserId
+  }
+
+  loggedInUserId(){
+    return this.state.loggedInUserId
+  }
+
+  setLoggedInUserId = (userId) => {
+    this.setState({
+      loggedInUserId: userId
+    })
   }
 
   componentDidMount(){
@@ -41,7 +57,6 @@ class App extends React.Component {
   // };
 
   render(){
-
     // const { data, searchTerm } = this.state;
 
     // const lowercasedFilter = searchTerm.toLowerCase();
@@ -62,7 +77,7 @@ class App extends React.Component {
 
     return (
       <div className="App">
-          <Container addToCart={this.props.addToCart} allProducts={this.getAllData()} handleMoreButton={this.handleMoreButton}/>
+          <Container addToCart={this.props.addToCart} allProducts={this.getAllData()} handleMoreButton={this.handleMoreButton} isLoggedIn={this.isLoggedIn}/>
       </div>
     )
   }
