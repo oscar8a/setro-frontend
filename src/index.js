@@ -5,11 +5,16 @@ import App from './App';
 import Navigation from './components/Navigation'
 import Signup from './components/Signup'
 import Login from './components/Login'
+import Cart from './components/Cart'
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
  
+const addToCart = (product) => {
+  console.log(product)
+}
+
 const home = () => {
-  return <App />
+  return <App addToCart={addToCart}/>
 };
 
 const signup = () => {
@@ -20,6 +25,10 @@ const login = () => {
   return <Login />
 };
 
+const cart = () => {
+  return <Cart />
+};
+
 ReactDOM.render((
   <Router>
     <div>
@@ -27,6 +36,7 @@ ReactDOM.render((
       <Route exact path="/" component={home} />
       <Route exact path="/signup" component={signup} />
       <Route exact path="/login" component={login} />
+      <Route exact path="/cart" component={cart} />
     </div>
   </Router>),
   document.getElementById('root')

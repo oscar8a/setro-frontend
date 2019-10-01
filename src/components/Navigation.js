@@ -18,7 +18,9 @@ class Navigation extends React.Component {
         </Nav>
         &nbsp;&nbsp;&nbsp;
         <Nav>
-          <ButtonToolbar>
+        <ButtonToolbar>
+            <Button variant="light"><Link to={"/cart"}><span role='img' aria-label="cart">🛒</span></Link></Button>
+            &nbsp;&nbsp;&nbsp;
             <Button variant="light"><Link to={"/signup"} >Sign Up</Link></Button>
             &nbsp;&nbsp;&nbsp;
             <Button variant="light"><Link to={"/login"} >Log In</Link></Button>

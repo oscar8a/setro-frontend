@@ -24,6 +24,7 @@ class App extends React.Component {
   }
 
   handleMoreButton = () => {
+    console.log("CLICKING BUTTON")
     this.setState({
       idx: this.state.idx + 4
     })
@@ -61,7 +62,7 @@ class App extends React.Component {
 
     return (
       <div className="App">
-          <Container allProducts={this.getAllData()} handleMoreButton={this.handleMoreButton}/>
+          <Container addToCart={this.props.addToCart} allProducts={this.getAllData()} handleMoreButton={this.handleMoreButton}/>
       </div>
     )
   }

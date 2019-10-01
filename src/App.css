@@ -21,7 +21,11 @@
   color: #09d3ac;
 }
 
-.signupform {
+.authform {
   margin: auto;
   width: 80%;
+}
+
+.productrow {
+  height: 50%
 }

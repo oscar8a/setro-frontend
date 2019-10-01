@@ -9,15 +9,16 @@ const ProductCollection = (props) => {
     <Fragment>
       <h3> this is the Product Collection</h3>
       <CardDeck fluid>
-        <Row>
-      {props.allProducts.map(singleProduct => <Col><Product product={singleProduct} key={singleProduct.id} /></Col>)}
+        <Row noGutters>
+      {props.allProducts.map(singleProduct => <Col md={3}><Product addToCart={props.addToCart} product={singleProduct} key={singleProduct.id} /></Col>)}
         </Row>
 
       </CardDeck>
 
-      <Button onClick={props.handleMoreButton}> See More... </Button>
+      <Button onClick={props.handleMoreButton}> See More...  </Button>
      
     </Fragment>
   )
 }
 export default ProductCollection
+//just nothing
