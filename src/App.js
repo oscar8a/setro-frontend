@@ -1,10 +1,23 @@
 import React from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import * as serviceWorker from './serviceWorker';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Container from './containers/Container'
+import Navigation from './components/Navigation'
+import Signup from './components/Signup'
 import Login from './components/Login'
+import Cart from './components/Cart'
+import Container from './containers/Container'
 
 const URL = 'http://localhost:3000/products/'
+
+const signup = () => {
+  return <Signup />
+};
+
+const cart = () => {
+  return <Cart />
+};
 
 class App extends React.Component {
 
@@ -12,7 +25,8 @@ class App extends React.Component {
     allProductsData: [],
     idx: 0,
     searchTerm: "",
-    loggedInUserId: null
+    loggedInUserId: null,
+    token: null
   }
 
   isLoggedIn(){
@@ -29,12 +43,31 @@ class App extends React.Component {
     })
   }
 
+  logInUser = (token, userId) => {
+    localStorage.token = token
+    localStorage.userId = userId
+    this.setState({
+      token: token,
+      loggedInUserId: userId
+    })
+  }
+
+  logOutUser = () => {
+    delete localStorage.token
+    delete localStorage.userId
+    this.setState({
+      token: null,
+      loggedInUserId: null
+    })
+  }
+
   componentDidMount(){
     fetch(URL)
     .then(response => response.json())
     .then(data => {
       this.setState({
-        allProductsData: data
+        allProductsData: data,
+        token: localStorage.token
       })
     })
   }
@@ -75,13 +108,17 @@ class App extends React.Component {
         
 
 
-    return (
-      <div className="App">
-          <Container addToCart={this.props.addToCart} allProducts={this.getAllData()} handleMoreButton={this.handleMoreButton} isLoggedIn={this.isLoggedIn}/>
+    return <Router>
+      <div>
+      <header className='App-header' ><Navigation /></header>
+      <Route exact path="/" render={() => <div className="App"><Container addToCart={this.props.addToCart} allProducts={this.getAllData()} handleMoreButton={this.handleMoreButton} isLoggedIn={this.isLoggedIn} /></div>} /> 
+      <Route exact path="/signup" component={signup} />
+  <Route exact path="/login" render={() => <Login logInUser={ this.logInUser}/>} token={ this.state.token} loggedInUserId={ this.state.loggedInUserId } />
+      <Route exact path="/cart" component={cart} />
       </div>
-    )
+    </Router>
   }
-
 }
+serviceWorker.unregister();
 
 export default App;
