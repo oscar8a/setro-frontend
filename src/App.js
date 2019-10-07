@@ -8,6 +8,7 @@ import Signup from './components/Signup'
 import Login from './components/Login'
 import Cart from './components/Cart'
 import Container from './containers/Container'
+import UserProfile from './components/UserProfile';
 
 const URL = 'http://localhost:3000/products/'
 
@@ -18,6 +19,10 @@ const signup = () => {
 const cart = () => {
   return <Cart />
 };
+
+const userProfile = () => {
+  return <UserProfile />
+}
 
 class App extends React.Component {
 
@@ -80,9 +85,13 @@ class App extends React.Component {
   }
 
   getAllData = () => {
-    let data = this.state.allProductsData.slice(this.state.idx, this.state.idx + 20)
+    let data = this.state.allProductsData.slice(this.state.idx, this.state.idx + 10)
 
     return data
+  }
+
+  addToCart = () => {
+
   }
 
   // handleChange = event => {
@@ -104,17 +113,16 @@ class App extends React.Component {
     //   );
     // });
 
-      //p.name.includes(lowercasedFilter)
-        
-
-
+    //p.name.includes(lowercasedFilter)
+      
     return <Router>
       <div>
       <header className='App-header' ><Navigation /></header>
-      <Route exact path="/" render={() => <div className="App"><Container addToCart={this.props.addToCart} allProducts={this.getAllData()} handleMoreButton={this.handleMoreButton} isLoggedIn={this.isLoggedIn} /></div>} /> 
+      <Route exact path="/" render={() => <div className="App"><Container addToCart={this.addToCart} allProducts={this.getAllData()} handleMoreButton={this.handleMoreButton} isLoggedIn={this.isLoggedIn} /></div>} /> 
       <Route exact path="/signup" component={signup} />
   <Route exact path="/login" render={() => <Login logInUser={ this.logInUser}/>} token={ this.state.token} loggedInUserId={ this.state.loggedInUserId } />
       <Route exact path="/cart" component={cart} />
+      <Route exact path="/profile" component={userProfile} />
       </div>
     </Router>
   }

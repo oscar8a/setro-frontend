@@ -5,83 +5,47 @@ import { withRouter } from 'react-router-dom';
 
 class Signup extends React.Component {
 
-  state = {
-    first_name: "",
-    last_name: "",
-    email: "",
-    phone: "",
-    street: "",
-    city: "",
-    state: "",
-    zipcode: ""
-  }
+  // state = {
+  //   first_name: "",
+  //   last_name: "",
+  //   email: "",
+  //   password: "",
+  //   phone: "",
+  //   street: "",
+  //   city: "",
+  //   state: "",
+  //   zipcode: ""
+  // }
 
-  //REFACTOR THESE CHANGE HANDLERS
-  handleFirstNameChange = event => {
-    this.setState({
-      first_name: event.target.value
-    }, console.log(event.target.value))
-  }
- 
-  handleLastNameChange = event => {
-    this.setState({
-      last_name: event.target.value
-    }, console.log(event.target.value))
-  }
-
-  handleEmailChange = event => {
-    this.setState({
-      email: event.target.value
-    }, console.log(event.target.value))
-  }
-
-  handlePhoneChange = event => {
-    this.setState({
-      phone: event.target.value
-    }, console.log(event.target.value))
-  }
-
-  handleStreetChange = event => {
-    this.setState({
-      street: event.target.value
-    }, console.log(event.target.value))
-  }
-
-  handleCityChange = event => {
-    this.setState({
-      city: event.target.value
-    }, console.log(event.target.value))
-  }
-
-  handleStateChange = event => {
-    this.setState({
-      state: event.target.value
-    }, console.log(event.target.value))
-  }
-
-  handleZipcodeChange = event => {
-    this.setState({
-      zipcode: event.target.value
-    }, console.log(event.target.value))
-  }
+  // handleChange = event => {
+  //   console.log(this.state)
+  //   this.setState({
+  //     [event.target.name]: event.target.value
+  //   })
+  // }
 
   handleSubmit = (e) => {
     e.preventDefault();
 
     let formData = {
-      first_name: this.state.first_name,
-      last_name: this.state.last_name,
-      email: this.state.email,
-      phone: this.state.phone,
-      street: this.state.street,
-      city: this.state.city,
-      state: this.state.state,
-      zipcode: this.state.zipcode,
+      first_name: e.target.first_name.value,
+      last_name: e.target.last_name.value,
+      email: e.target.email.value,
+      password: e.target.password.value,
+      phone: e.target.phone.value,
+      street: e.target.street.value,
+      city: e.target.city.value,
+      state: e.target.state.value,
+      zipcode: e.target.zipcode.value,
     }
+    
+    //console.log(e.target.first_name.value) //DO NOT DELETE THIS
+
     this.sendFormData(formData)
   }
 
   sendFormData = (data) => {
+
 
     fetch('http://localhost:3000/users/', {
       method: 'POST',
@@ -94,7 +58,7 @@ class Signup extends React.Component {
       })
     })
     .then(response => response.json())
-    .then(resp => console.log)
+    .then(resp => console.log(resp))
 
     this.props.history.push('/');
   }
@@ -111,51 +75,51 @@ class Signup extends React.Component {
         <Form.Row>
           <Form.Group>
             <Form.Label>First Name: </Form.Label>
-            <Form.Control placeholder="First Name" onChange={event => this.handleFirstNameChange(event)} value={this.state.first_name}/>
+            <Form.Control placeholder="First Name" name="first_name" />
           </Form.Group>
           <Form.Group>
             <Form.Label>Last Name: </Form.Label>
-            <Form.Control placeholder="Last Name" onChange={event => this.handleLastNameChange(event)} value={this.state.last_name}/>
+            <Form.Control placeholder="Last Name" name="last_name" />
           </Form.Group>
         </Form.Row>
 
         <Form.Row>
           <Form.Group controlId="formGridEmail">
             <Form.Label>Email</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" onChange={event => this.handleEmailChange(event)} value={this.state.email}/>
+            <Form.Control type="email" placeholder="Enter email" name="email" />
           </Form.Group>
           <Form.Group>
               <Form.Label>Password</Form.Label>
-              <Form.Control placeholder="Password" />
+              <Form.Control placeholder="Password" name="password" />
           </Form.Group>
         </Form.Row>
 
         <Form.Group>
           <Form.Label>Phone Number: </Form.Label>
-          <Form.Control placeholder="#-###-###-##-##" onChange={event => this.handlePhoneChange(event)} value={this.state.phone}/>
+          <Form.Control placeholder="#-###-###-##-##" name="phone" />
         </Form.Group>
 
         <Form.Group>
           <Form.Label>Address</Form.Label>
-          <Form.Control placeholder="1234 Main St" onChange={event => this.handleStreetChange(event)} value={this.state.street}/>
+          <Form.Control placeholder="1234 Main St" name="street" />
         </Form.Group>
 
         <Form.Row>
           <Form.Group>
             <Form.Label>City</Form.Label>
-            <Form.Control onChange={event => this.handleCityChange(event)} value={this.state.city}/>
+            <Form.Control name="city" />
           </Form.Group>
 
           <Form.Group>
             <Form.Label>State</Form.Label>
-            <Form.Control as="select" onChange={event => this.handleStateChange(event)} value={this.state.state}>
-              {usStatesArray.map(state => {return <option>{state}</option>})}
+            <Form.Control as="select" name="state">
+              {usStatesArray.map(state => {return <option key={state}>{state}</option>})}
             </Form.Control>
           </Form.Group>
 
           <Form.Group>
             <Form.Label>Zip</Form.Label>
-            <Form.Control onChange={event => this.handleZipcodeChange(event)} value={this.state.zipcode}/>
+            <Form.Control name="zipcode" />
           </Form.Group>
         </Form.Row>
 

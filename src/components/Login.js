@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button'
 class Login extends React.Component {
   state ={
     logIn: false,
-    username: "",
+    email: "",
     password: "",
     errors: []
   }
@@ -20,8 +20,8 @@ class Login extends React.Component {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        email: this.state.username,
-        first_name: this.state.password
+        email: this.state.email,
+        password: this.state.password
       })
     })
     .then(response => response.json())
@@ -63,7 +63,7 @@ class Login extends React.Component {
       <Form className="authform" onSubmit={ this.logInSubmit }>
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" placeholder="Enter email" name="username" onChange={ this.onChange } value={ this.state.username }/>
+          <Form.Control type="email" placeholder="Enter email" name="email" onChange={ this.onChange } value={ this.state.email }/>
         </Form.Group>
 
         <Form.Group controlId="formBasicPassword">
