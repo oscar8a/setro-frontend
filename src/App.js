@@ -1,14 +1,15 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import {Switch, Link, withRouter, Redirect, BrowserRouter as Router, Route} from 'react-router-dom';
 import * as serviceWorker from './serviceWorker';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navigation from './components/Navigation'
 import Signup from './components/Signup'
-import Login from './components/Login'
+import Login from './components/Login/Login'
 import Cart from './components/Cart'
 import Container from './containers/Container'
 import UserProfile from './components/UserProfile';
+import NotFound from './components/NotFound'
 
 const URL = 'http://localhost:3000/products/'
 
@@ -94,36 +95,24 @@ class App extends React.Component {
 
   }
 
-  // handleChange = event => {
-  //   this.setState({ searchTerm: event.target.value });
-  // };
-
   render(){
-    // const { data, searchTerm } = this.state;
-
-    // const lowercasedFilter = searchTerm.toLowerCase();
-
-    // console.log(data)
-    // console.log(searchTerm)
-    // console.log(lowercasedFilter)
-
-    // const productsToShow = data.filter(p => {
-    //   return Object.keys(p).some(key =>
-    //     p[key].toLowerCase().includes(lowercasedFilter)
-    //   );
-    // });
-
-    //p.name.includes(lowercasedFilter)
       
     return <Router>
-      <div>
-      <header className='App-header' ><Navigation /></header>
-      <Route exact path="/" render={() => <div className="App"><Container addToCart={this.addToCart} allProducts={this.getAllData()} handleMoreButton={this.handleMoreButton} isLoggedIn={this.isLoggedIn} /></div>} /> 
-      <Route exact path="/signup" component={signup} />
-  <Route exact path="/login" render={() => <Login logInUser={ this.logInUser}/>} token={ this.state.token} loggedInUserId={ this.state.loggedInUserId } />
-      <Route exact path="/cart" component={cart} />
-      <Route exact path="/profile" component={userProfile} />
-      </div>
+      <Switch>
+        <Route path="/" exact component={ Login } />
+        <Route component={NotFound} />
+
+
+      </Switch>
+      
+      {/* <div>
+        <header className='App-header' ><Navigation /></header>
+        <Route exact path="/" render={() => <div className="App"><Container addToCart={this.addToCart} allProducts={this.getAllData()} handleMoreButton={this.handleMoreButton} isLoggedIn={this.isLoggedIn} /></div>} />
+        <Route exact path="/signup" component={signup} />
+        <Route exact path="/login" render={() => <Login logInUser={this.logInUser} />} token={this.state.token} loggedInUserId={this.state.loggedInUserId} />
+        <Route exact path="/cart" component={cart} />
+        <Route exact path="/profile" component={userProfile} />
+      </div> */}
     </Router>
   }
 }

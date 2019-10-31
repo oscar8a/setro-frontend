@@ -10,6 +10,8 @@ import { Link }  from 'react-router-dom'
 class Navigation extends React.Component {
   
   render(){
+
+
     return <Navbar variant="dark">
 
       <Navbar.Brand href="/"><span role='img' aria-label="pine and a nut">🌲🌰</span> Seeds Store <span role='img' aria-label="pine and a nut">🌲🌰</span></Navbar.Brand>
@@ -20,6 +22,8 @@ class Navigation extends React.Component {
         <Nav>
         <ButtonToolbar>
             <Button variant="light"><Link to={"/cart"}><span role='img' aria-label="cart">🛒</span></Link></Button>
+            &nbsp;&nbsp;&nbsp;
+            <Button variant="light"><Link to={"/profile"} >Profile</Link></Button>
             &nbsp;&nbsp;&nbsp;
             <Button variant="light"><Link to={"/signup"} >Sign Up</Link></Button>
             &nbsp;&nbsp;&nbsp;

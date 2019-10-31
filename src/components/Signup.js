@@ -54,7 +54,7 @@ class Signup extends React.Component {
         'Accept': 'application/json'
       },
       body: JSON.stringify({
-        ...data
+        user: {...data}
       })
     })
     .then(response => response.json())

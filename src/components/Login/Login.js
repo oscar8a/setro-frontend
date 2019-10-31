@@ -48,9 +48,9 @@ class Login extends React.Component {
 
   render() {
     return <>
-    <ul>
+    {/* <ul>
       {this.state.errors.map(error => <li>{ error }</li>)}
-    </ul>
+    </ul> */}
     {
       this.state.logIn
       ?
@@ -58,9 +58,11 @@ class Login extends React.Component {
         "Please Signup"
       </section> 
       :
-      <section className="App">
+      <section className="App container-fluid bg">
+        <section className="row justify-content-center">
+        <section className="col-12 col-sm-3 col-md-4">
       <h1>THIS IS THE LOGIN PAGE</h1>
-      <Form className="authform" onSubmit={ this.logInSubmit }>
+      <Form className="authform login-form" onSubmit={ this.logInSubmit }>
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control type="email" placeholder="Enter email" name="email" onChange={ this.onChange } value={ this.state.email }/>
@@ -71,10 +73,12 @@ class Login extends React.Component {
           <Form.Control type="password" placeholder="Password" name="password" onChange={ this.onChange } value={ this.state.password }/>
         </Form.Group>
         
-        <Button variant="primary" type="submit">
+        <Button variant="primary" className="btn-block" type="submit">
           Submit
         </Button>
       </Form>
+      </section>
+      </section>
       </section>
 
     }
