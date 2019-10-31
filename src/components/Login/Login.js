@@ -36,11 +36,8 @@ class Login extends React.Component {
     })
   }
 
-  // signUpSubmit = event => {
-
-  // }
-
   onChange = event => {
+    console.log(this.state)
     this.setState({
       [event.target.name]: event.target.value
     })
@@ -52,35 +49,27 @@ class Login extends React.Component {
       {this.state.errors.map(error => <li>{ error }</li>)}
     </ul> */}
     {
-      this.state.logIn
-      ?
-      <section>
-        "Please Signup"
-      </section> 
-      :
       <section className="App container-fluid bg">
         <section className="row justify-content-center">
-        <section className="col-12 col-sm-3 col-md-4">
-      <h1>THIS IS THE LOGIN PAGE</h1>
-      <Form className="authform login-form" onSubmit={ this.logInSubmit }>
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" placeholder="Enter email" name="email" onChange={ this.onChange } value={ this.state.email }/>
-        </Form.Group>
+          <section className="col-12 col-sm-3 col-md-4">
+            <h1>THIS IS THE LOGIN PAGE</h1>              <Form className="authform login-form" onSubmit={this.logInSubmit}>
+              <Form.Group controlId="formBasicEmail">
+                <Form.Label>Email address</Form.Label>
+                <Form.Control type="email" placeholder="Enter email" name="email" onChange={this.onChange} value={this.state.email} />
+               </Form.Group>
 
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Password" name="password" onChange={ this.onChange } value={ this.state.password }/>
-        </Form.Group>
-        
-        <Button variant="primary" className="btn-block" type="submit">
-          Submit
-        </Button>
-      </Form>
-      </section>
-      </section>
-      </section>
+              <Form.Group controlId="formBasicPassword">
+                <Form.Label>Password</Form.Label>
+                <Form.Control type="password" placeholder="Password" name="password" onChange={this.onChange} value={this.state.password} />
+              </Form.Group>
 
+              <Button variant="primary" className="btn-block" type="submit">
+                  Submit
+              </Button>
+            </Form>
+          </section>
+        </section>
+      </section>
     }
     </>
   }

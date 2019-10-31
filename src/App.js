@@ -78,18 +78,7 @@ class App extends React.Component {
     })
   }
 
-  handleMoreButton = () => {
-    console.log("CLICKING BUTTON")
-    this.setState({
-      idx: this.state.idx + 4
-    })
-  }
 
-  getAllData = () => {
-    let data = this.state.allProductsData.slice(this.state.idx, this.state.idx + 10)
-
-    return data
-  }
 
   addToCart = () => {
 
@@ -100,6 +89,8 @@ class App extends React.Component {
     return <Router>
       <Switch>
         <Route path="/" exact component={ Login } />
+        <Route path="/signup" exact component={ Signup } />
+        <Route path="/home" exact component={ Container } />
         <Route component={NotFound} />
 
 

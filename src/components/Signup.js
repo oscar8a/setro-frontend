@@ -1,5 +1,5 @@
 import React from 'react'
-import Form from 'react-bootstrap/Form'
+import { Row, Col, Form } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import { withRouter } from 'react-router-dom';
 
@@ -46,7 +46,6 @@ class Signup extends React.Component {
 
   sendFormData = (data) => {
 
-
     fetch('http://localhost:3000/users/', {
       method: 'POST',
       headers: {
@@ -60,37 +59,61 @@ class Signup extends React.Component {
     .then(response => response.json())
     .then(resp => console.log(resp))
 
-    this.props.history.push('/');
+    this.props.history.push('/home');
   }
-
-  
 
   render() {
 
     const usStatesArray = ["AK","AL","AR","AS","AZ","CA","CO","CT","DC","DE","FL","GA","GU","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY","OH","OK","OR","PA","PR","RI","SC","SD","TN","TX","UT","VA","VI","VT","WA","WI","WV","WY"];
 
-    return <div className="authform">
-      <h1> This is the Signup Page </h1>
-      <form onSubmit={this.handleSubmit}>
+    return <section className="container-fluid bg">
+      <section className="row justify-content-center">
+        <section className="col-12 col-sm-6 col-md-8">
+        <Form className="login-form" onSubmit={this.handleSubmit}>
+        <h1> Signup Form </h1>
         <Form.Row>
-          <Form.Group>
+          <Form.Group as={Col} controlId="formGridEmail">
+            <Form.Label>Email</Form.Label>
+            <Form.Control type="email" placeholder="Enter email" name="email" />
+          </Form.Group>
+          <Form.Group as={Col}>
+              <Form.Label>Password</Form.Label>
+              <Form.Control placeholder="Password" name="password" />
+          </Form.Group>
+        </Form.Row>
+
+        <Form.Row>
+          <Form.Group as={Col}>
             <Form.Label>First Name: </Form.Label>
             <Form.Control placeholder="First Name" name="first_name" />
           </Form.Group>
-          <Form.Group>
+          <Form.Group as={Col}>
             <Form.Label>Last Name: </Form.Label>
             <Form.Control placeholder="Last Name" name="last_name" />
           </Form.Group>
         </Form.Row>
 
+        <Form.Group>
+          <Form.Label>Address</Form.Label>
+          <Form.Control placeholder="1234 Main St" name="street" />
+        </Form.Group>
+
         <Form.Row>
-          <Form.Group controlId="formGridEmail">
-            <Form.Label>Email</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" name="email" />
+          <Form.Group as={Col}>
+            <Form.Label>City</Form.Label>
+            <Form.Control name="city" />
           </Form.Group>
-          <Form.Group>
-              <Form.Label>Password</Form.Label>
-              <Form.Control placeholder="Password" name="password" />
+
+          <Form.Group as={Col}>
+            <Form.Label>State</Form.Label>
+            <Form.Control as="select" name="state">
+              {usStatesArray.map(state => {return <option key={state}>{state}</option>})}
+            </Form.Control>
+          </Form.Group>
+
+          <Form.Group as={Col}>
+            <Form.Label>Zip</Form.Label>
+            <Form.Control name="zipcode" />
           </Form.Group>
         </Form.Row>
 
@@ -99,35 +122,13 @@ class Signup extends React.Component {
           <Form.Control placeholder="#-###-###-##-##" name="phone" />
         </Form.Group>
 
-        <Form.Group>
-          <Form.Label>Address</Form.Label>
-          <Form.Control placeholder="1234 Main St" name="street" />
-        </Form.Group>
-
-        <Form.Row>
-          <Form.Group>
-            <Form.Label>City</Form.Label>
-            <Form.Control name="city" />
-          </Form.Group>
-
-          <Form.Group>
-            <Form.Label>State</Form.Label>
-            <Form.Control as="select" name="state">
-              {usStatesArray.map(state => {return <option key={state}>{state}</option>})}
-            </Form.Control>
-          </Form.Group>
-
-          <Form.Group>
-            <Form.Label>Zip</Form.Label>
-            <Form.Control name="zipcode" />
-          </Form.Group>
-        </Form.Row>
-
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="submit" className="btn-block">
           Submit
         </Button>
-      </form>
-    </div>
+      </Form>
+      </section>
+      </section>
+    </section>
   }
 
 }
