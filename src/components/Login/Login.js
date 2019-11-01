@@ -1,4 +1,5 @@
 import React from 'react'
+import { withRouter } from 'react-router-dom'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
@@ -14,24 +15,28 @@ class Login extends React.Component {
   logInSubmit = e => {
     e.preventDefault()
 
-    fetch('http://localhost:3000/tokens', {
+    fetch('http://localhost:3000/login', {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
       },
       body: JSON.stringify({
-        email: this.state.email,
-        password: this.state.password
+        user: {
+          email: this.state.email,
+          password: this.state.password
+        }
       })
     })
     .then(response => response.json())
     .then(data => {
+      console.log(data)
       if (data.errors) {
         this.setState({
           errors: data.errors
         })
       } else {
-        this.props.logInUser(data.token, data.user_id)
+        this.props.logInUser(data)
       }
     })
   }
@@ -52,7 +57,9 @@ class Login extends React.Component {
       <section className="App container-fluid bg">
         <section className="row justify-content-center">
           <section className="col-12 col-sm-3 col-md-4">
-            <h1>THIS IS THE LOGIN PAGE</h1>              <Form className="authform login-form" onSubmit={this.logInSubmit}>
+            <h1>THIS IS THE LOGIN PAGE</h1>
+            <h1>STATUS: {this.props.loginStatus}</h1>
+            <Form className="authform login-form" onSubmit={this.logInSubmit}>
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
                 <Form.Control type="email" placeholder="Enter email" name="email" onChange={this.onChange} value={this.state.email} />
@@ -74,4 +81,4 @@ class Login extends React.Component {
     </>
   }
 }
-export default Login
+export default withRouter(Login)

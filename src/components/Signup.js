@@ -57,9 +57,11 @@ class Signup extends React.Component {
       })
     })
     .then(response => response.json())
-    .then(resp => console.log(resp))
-
-    this.props.history.push('/home');
+    .then(resp => {
+      console.log(resp)
+      this.props.logInUser(resp)
+      this.props.history.push('/home');
+    })
   }
 
   render() {
