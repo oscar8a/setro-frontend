@@ -12,11 +12,16 @@ class Container extends React.Component {
     token: null
   }
 
+  componentDidMount(){
+    this.fetchAllData();
+  }
+
   fetchAllData = () => {
     fetch('http://localhost:3000/products', {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
+        'Content-Type': 'application/json',
         Accept: 'application/json'
       }
     })
@@ -42,13 +47,14 @@ class Container extends React.Component {
   }
   
   render(){
-    this.fetchAllData();
+    const allProductsArray = this.state.allProductsData;
 
-    return <div>
+    return <div className="containerdiv">
       <h2>This is the Container</h2>
       <h1>STATUS: {this.props.loginStatus}</h1>
 
-      {/* <ProductCollection allProducts={this.props.allProducts} addToCart = {this.props.addToCart} handleMoreButton={this.props.handleMoreButton}/> */}
+      <ProductCollection allProducts={allProductsArray} />
+       {/* addToCart = {this.props.addToCart} handleMoreButton={this.props.handleMoreButton}/> */}
 
     </div>
 
