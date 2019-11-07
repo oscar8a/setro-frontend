@@ -53,3 +53,8 @@
   position: relative;
   padding: 30px;
 }
+
+.productcard {
+  min-height: 300px;
+  margin-bottom: 30px;
+}

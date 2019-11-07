@@ -5,15 +5,12 @@ import Button from 'react-bootstrap/Button'
 
 const ProductCollection = (props) => {
   
-  return(
-    <Fragment>
-      <h3> this is the Product Collection</h3>
+  return(<Fragment>
       <div>
-
-      
-      <Container fluid="false">
-        <Row noGutters="true">
-      {props.allProducts.map(singleProduct => <Col md={3} key={singleProduct.id}><Product addToCart={props.addToCart} product={singleProduct} key={singleProduct.id}/></Col>)}
+      <Container fluid>
+        <Row>
+      {/* {props.allProducts.map(singleProduct => <Product key={singleProduct.id} addToCart={props.addToCart} product={singleProduct}/>)} */}
+      {props.allProducts.map(singleProduct => <Col md="4" key={singleProduct.id}><Product addToCart={props.addToCart} product={singleProduct} key={singleProduct.id}/></Col>)}
         </Row>
 
       </Container>

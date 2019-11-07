@@ -10,7 +10,7 @@ class Product extends Component {
 
   render(){
 
-  return <Card className='card' bg="success">
+  return <Card className="productcard">
     <Card.Header>{this.props.product.species}</Card.Header>
     <Card.Body>
       <Card.Title>{this.props.product.common_name}</Card.Title>
