@@ -1,27 +1,24 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import {Switch, Link, withRouter, Redirect, BrowserRouter as Router, Route} from 'react-router-dom';
 import * as serviceWorker from './serviceWorker';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Navigation from './components/Navigation'
-import Signup from './components/Signup'
-import Login from './components/Login'
-import Cart from './components/Cart'
-import Container from './containers/Container'
+import Navigation from './components/Navigation';
+import Signup from './components/Signup';
+import Login from './components/Login/Login';
+import Cart from './components/Cart';
+import Container from './containers/Container';
+import UserProfile from './components/UserProfile';
+import NotFound from './components/NotFound';
+import history from './history';
 
 const URL = 'http://localhost:3000/products/'
-
-const signup = () => {
-  return <Signup />
-};
-
-const cart = () => {
-  return <Cart />
-};
 
 class App extends React.Component {
 
   state = {
+    loginStatus: "NOT LOGGED IN",
+    user: {},
     allProductsData: [],
     idx: 0,
     searchTerm: "",
@@ -43,79 +40,65 @@ class App extends React.Component {
     })
   }
 
-  logInUser = (token, userId) => {
-    localStorage.token = token
-    localStorage.userId = userId
+  logInUser = (data) => {
     this.setState({
-      token: token,
-      loggedInUserId: userId
+      loginStatus: "LOGGED IN",
+      user: data
     })
+    window.sessionStorage.setItem("token", data.jwt);
+    history.push('/home');
   }
 
   logOutUser = () => {
-    delete localStorage.token
-    delete localStorage.userId
     this.setState({
-      token: null,
-      loggedInUserId: null
+      loginStatus: "NOT LOGGED IN",
+      user: {}
     })
+    window.sessionStorage.clear();
+    this.props.history.push("/login");
   }
 
   componentDidMount(){
-    fetch(URL)
-    .then(response => response.json())
-    .then(data => {
-      this.setState({
-        allProductsData: data,
-        token: localStorage.token
-      })
-    })
+    console.log(this.state)
   }
-
-  handleMoreButton = () => {
-    console.log("CLICKING BUTTON")
-    this.setState({
-      idx: this.state.idx + 4
-    })
-  }
-
-  getAllData = () => {
-    let data = this.state.allProductsData.slice(this.state.idx, this.state.idx + 20)
-
-    return data
-  }
-
-  // handleChange = event => {
-  //   this.setState({ searchTerm: event.target.value });
-  // };
 
   render(){
-    // const { data, searchTerm } = this.state;
+      
+    return <Router history={history}>
+      {
+        !!window.sessionStorage.getItem("token")
+        ?
+        <header><Navigation logOutUser={this.logOutUser}/></header>
+        :
+        null
+      }
+      <Switch>
 
-    // const lowercasedFilter = searchTerm.toLowerCase();
+        <Route exact path="/" render={props => (<Login { ...props } loginStatus={this.state.loginStatus} logInUser={this.logInUser}/>)}/>
 
-    // console.log(data)
-    // console.log(searchTerm)
-    // console.log(lowercasedFilter)
+        <Route exact path="/login" render={props => (<Login { ...props } loginStatus={this.state.loginStatus} logInUser={this.logInUser}/>)}/>
 
-    // const productsToShow = data.filter(p => {
-    //   return Object.keys(p).some(key =>
-    //     p[key].toLowerCase().includes(lowercasedFilter)
-    //   );
-    // });
+        <Route exact path="/signup" render={props => (<Signup { ...props } loginStatus={this.state.loginStatus} logInUser={this.logInUser}/>)} />
 
-      //p.name.includes(lowercasedFilter)
-        
+        <Route path="/home" render={props => (<Container { ...props } loginStatus={this.state.loginStatus} />)}/>
+
+        <Route path="/profile" render={props => (<UserProfile { ...props }/>)}/>
 
 
-    return <Router>
-      <div>
-      <header className='App-header' ><Navigation /></header>
-      <Route exact path="/" render={() => <div className="App"><Container addToCart={this.props.addToCart} allProducts={this.getAllData()} handleMoreButton={this.handleMoreButton} isLoggedIn={this.isLoggedIn} /></div>} /> 
-      <Route exact path="/signup" component={signup} />
-  <Route exact path="/login" render={() => <Login logInUser={ this.logInUser}/>} token={ this.state.token} loggedInUserId={ this.state.loggedInUserId } />
-      <Route exact path="/cart" component={cart} />
-      </div>
+
+
+
+        <Route component={NotFound} />
+      </Switch>
+      
+      {/* <div>
+        <header className='App-header' ><Navigation /></header>
+        <Route exact path="/" render={() => <div className="App"><Container addToCart={this.addToCart} allProducts={this.getAllData()} handleMoreButton={this.handleMoreButton} isLoggedIn={this.isLoggedIn} /></div>} />
+        <Route exact path="/signup" component={signup} />
+        <Route exact path="/login" render={() => <Login logInUser={this.logInUser} />} token={this.state.token} loggedInUserId={this.state.loggedInUserId} />
+        <Route exact path="/cart" component={cart} />
+        <Route exact path="/profile" component={userProfile} />
+      </div> */}
     </Router>
   }
 }

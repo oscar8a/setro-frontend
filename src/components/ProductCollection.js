@@ -1,21 +1,23 @@
 import React, { Fragment } from "react";
 import Product from './Product'
-import { CardDeck, Row, Col } from 'react-bootstrap'
+import { CardDeck, Row, Col, Container } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 
 const ProductCollection = (props) => {
   
-  return(
-    <Fragment>
-      <h3> this is the Product Collection</h3>
-      <CardDeck fluid>
-        <Row noGutters>
-      {props.allProducts.map(singleProduct => <Col md={3}><Product addToCart={props.addToCart} product={singleProduct} key={singleProduct.id} /></Col>)}
+  return(<Fragment>
+      <div>
+      <Container fluid>
+        <Row>
+      {/* {props.allProducts.map(singleProduct => <Product key={singleProduct.id} addToCart={props.addToCart} product={singleProduct}/>)} */}
+      {props.allProducts.map(singleProduct => <Col md="4" key={singleProduct.id}><Product addToCart={props.addToCart} product={singleProduct} key={singleProduct.id}/></Col>)}
         </Row>
 
-      </CardDeck>
-
+      </Container>
+      </div>
+      <div>
       <Button onClick={props.handleMoreButton}> See More...  </Button>
+      </div>
      
     </Fragment>
   )

@@ -3,7 +3,9 @@ import React from 'react'
 class Cart extends React.Component {
 
   state = {
-    cartArr: []
+    cartArr: [],
+    cartTotal: "",
+    checkedOut: false
   }
 
   render(){

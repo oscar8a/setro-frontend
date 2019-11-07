@@ -1,23 +1,26 @@
-import React, { Fragment } from "react";
+import React, { Component } from "react";
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 
-const Product = (props) => {
+class Product extends Component {
 
-  return <Fragment >
+  state = {
+    status: ''
+  }
 
-    <Card class='card'bg="success">
+  render(){
+
+  return <Card className="productcard">
+    <Card.Header>{this.props.product.species}</Card.Header>
     <Card.Body>
-      <Card.Title>{props.product.species}</Card.Title>
+      <Card.Title>{this.props.product.common_name}</Card.Title>
       <Card.Text>
-        {props.product.common_name}
-        <br></br>
-        {props.product.origin} | {props.product.country}
+        {this.props.product.origin} | {this.props.product.country}
       </Card.Text>
     </Card.Body>
-      <Button variant="light" onClick={() => props.addToCart(props.product)}> ADD TO <span role='img' aria-label="cart">🛒</span></Button>
+    <Card.Footer><Button variant="light" onClick={() => this.props.addToCart(this.props.product)}> ADD TO <span role='img' aria-label="cart">🛒</span></Button></Card.Footer>
     </Card>
-  </Fragment>
+  }
 
 
 }

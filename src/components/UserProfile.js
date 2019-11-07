@@ -1,78 +1,41 @@
-import React from 'react'
-import { Row, Col, Form } from 'react-bootstrap'
-import Button from 'react-bootstrap/Button'
-import { withRouter } from 'react-router-dom';
+import React from 'react';
+import { Form, Col } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
 
-class Signup extends React.Component {
+class UserProfile extends React.Component {
 
-  // state = {
-  //   first_name: "",
-  //   last_name: "",
-  //   email: "",
-  //   password: "",
-  //   phone: "",
-  //   street: "",
-  //   city: "",
-  //   state: "",
-  //   zipcode: ""
-  // }
-
-  // handleChange = event => {
-  //   console.log(this.state)
-  //   this.setState({
-  //     [event.target.name]: event.target.value
-  //   })
-  // }
-
-  handleSubmit = (e) => {
-    e.preventDefault();
-
-    let formData = {
-      first_name: e.target.first_name.value,
-      last_name: e.target.last_name.value,
-      email: e.target.email.value,
-      password: e.target.password.value,
-      phone: e.target.phone.value,
-      street: e.target.street.value,
-      city: e.target.city.value,
-      state: e.target.state.value,
-      zipcode: e.target.zipcode.value,
-    }
-    
-    //console.log(e.target.first_name.value) //DO NOT DELETE THIS
-
-    this.sendFormData(formData)
+  state = {
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "",
+    phone: "",
+    street: "",
+    city: "",
+    state: "",
+    zipcode: ""
   }
 
-  sendFormData = (data) => {
-
-    fetch('http://localhost:3000/users/', {
-      method: 'POST',
+  fetchUserData(){
+    fetch('http://localhost:3000/profile', {
+      method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({
-        user: {...data}
-      })
+        Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
+        Accept: 'application/json'
+      }
     })
-    .then(response => response.json())
-    .then(resp => {
-      console.log(resp)
-      this.props.logInUser(resp)
-      this.props.history.push('/home');
-    })
+    .then(resp => resp.json())
+    .then(data => console.log(data))
   }
 
-  render() {
 
+  render(){
+    this.fetchUserData();
     const usStatesArray = ["AK","AL","AR","AS","AZ","CA","CO","CT","DC","DE","FL","GA","GU","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY","OH","OK","OR","PA","PR","RI","SC","SD","TN","TX","UT","VA","VI","VT","WA","WI","WV","WY"];
 
-    return <section className="container-fluid bg">
-      <section className="row justify-content-center">
-        <section className="col-12 col-sm-6 col-md-8">
-        <Form className="login-form" onSubmit={this.handleSubmit}>
-        <h1> Signup Form </h1>
+    return <div className="authform">
+      <h1> This is the Profile Page </h1>
+      <Form className="login-form" onSubmit={this.handleSubmit}>
         <Form.Row>
           <Form.Group as={Col} controlId="formGridEmail">
             <Form.Label>Email</Form.Label>
@@ -128,10 +91,7 @@ class Signup extends React.Component {
           Submit
         </Button>
       </Form>
-      </section>
-      </section>
-    </section>
+    </div>
   }
-
 }
-export default withRouter(Signup);
+export default UserProfile
