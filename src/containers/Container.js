@@ -34,7 +34,7 @@ class Container extends React.Component {
   }
 
   getData(){
-    let seedproducts = this.state.allProductsData.slice(this.state.idx, this.state.idx + 10)
+    let seedproducts = this.state.allProductsData.slice(this.state.idx, this.state.idx + 6)
 
     return seedproducts
   }
@@ -42,7 +42,7 @@ class Container extends React.Component {
   handleMoreButton = () => {
     console.log("CLICKING BUTTON")
     this.setState({
-      idx: this.state.idx + 4
+      idx: this.state.idx + 6
     })
   }
   

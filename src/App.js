@@ -17,7 +17,7 @@ const URL = 'http://localhost:3000/products/'
 class App extends React.Component {
 
   state = {
-    loginStatus: "NOT LOGGED IN",
+    loginStatus: false,
     user: {},
     allProductsData: [],
     idx: 0,
@@ -27,7 +27,8 @@ class App extends React.Component {
   }
 
   isLoggedIn(){
-    return !!this.state.loggedInUserId
+    // return !!this.state.loginStatus
+    return !!window.sessionStorage.getItem("token")
   }
 
   loggedInUserId(){
@@ -42,20 +43,20 @@ class App extends React.Component {
 
   logInUser = (data) => {
     this.setState({
-      loginStatus: "LOGGED IN",
+      loginStatus: true,
       user: data
     })
-    window.sessionStorage.setItem("token", data.jwt);
+    // window.sessionStorage.setItem("token", data.jwt);
     history.push('/home');
   }
 
   logOutUser = () => {
     this.setState({
-      loginStatus: "NOT LOGGED IN",
+      loginStatus: false,
       user: {}
     })
-    window.sessionStorage.clear();
-    this.props.history.push("/login");
+    // window.sessionStorage.clear();
+    // history.push("/login")
   }
 
   componentDidMount(){
@@ -66,7 +67,7 @@ class App extends React.Component {
       
     return <Router history={history}>
       {
-        !!window.sessionStorage.getItem("token")
+        this.isLoggedIn()
         ?
         <header><Navigation logOutUser={this.logOutUser}/></header>
         :
@@ -88,7 +89,7 @@ class App extends React.Component {
 
 
 
-        <Route component={NotFound} />
+        <Route path="*" component={NotFound} />
       </Switch>
       
       {/* <div>

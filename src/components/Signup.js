@@ -39,7 +39,7 @@ class Signup extends React.Component {
       zipcode: e.target.zipcode.value,
     }
     
-    //console.log(e.target.first_name.value) //DO NOT DELETE THIS
+    //console.log(e.target.first_name.value) //keep this just in case
 
     this.sendFormData(formData)
   }
@@ -59,6 +59,7 @@ class Signup extends React.Component {
     .then(response => response.json())
     .then(resp => {
       console.log(resp)
+      window.sessionStorage.setItem("token", resp.token)
       this.props.logInUser(resp)
       this.props.history.push('/home');
     })
