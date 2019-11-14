@@ -19,11 +19,11 @@ class App extends React.Component {
   state = {
     loginStatus: false,
     user: {},
+    token: null,
     allProductsData: [],
     idx: 0,
     searchTerm: "",
     loggedInUserId: null,
-    token: null,
     cart: []
   }
 
@@ -43,11 +43,13 @@ class App extends React.Component {
   }
 
   logInUser = (data) => {
+    console.log('loginuser', data)
     this.setState({
       loginStatus: true,
-      user: data
+      user: data.user,
+      token: data.jwt
     })
-    // this.setCart()
+    this.setCart();
   }
 
   logOutUser = () => {
@@ -58,15 +60,12 @@ class App extends React.Component {
   }
 
   setCart = () => {
-    fetch('http://localhost:3000/cart', {
-      method: 'POST',
+    fetch(`http://localhost:3000/orders/${this.state.user.id}`, {
+      method: 'GET',
       headers: {
         Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
         'Content-Type': 'application/json',
         Accept: 'application/json'
-      },
-      body: {
-        ...this.state.user
       }
     })
     .then(resp => resp.json())
