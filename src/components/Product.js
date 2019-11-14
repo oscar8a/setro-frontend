@@ -9,16 +9,17 @@ class Product extends Component {
   }
 
   render(){
+  const productObj = this.props.product
 
   return <Card className="productcard">
-    <Card.Header>{this.props.product.species}</Card.Header>
+    <Card.Header>{productObj.species}</Card.Header>
     <Card.Body>
-      <Card.Title>{this.props.product.common_name}</Card.Title>
+      <Card.Title>{productObj.common_name}</Card.Title>
       <Card.Text>
-        {this.props.product.origin} | {this.props.product.country}
+        {productObj.origin} | {productObj.country}
       </Card.Text>
     </Card.Body>
-    <Card.Footer><Button variant="light" onClick={() => this.props.addToCart(this.props.product)}> ADD TO <span role='img' aria-label="cart">🛒</span></Button></Card.Footer>
+    <Card.Footer><Button variant="light" onClick={() => this.props.addToCart(productObj)}> ADD TO <span role='img' aria-label="cart">🛒</span></Button></Card.Footer>
     </Card>
   }
 

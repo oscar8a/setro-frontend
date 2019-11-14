@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 class UserProfile extends React.Component {
 
   state = {
+    id: "",
     first_name: "",
     last_name: "",
     email: "",
@@ -44,13 +45,37 @@ class UserProfile extends React.Component {
     })
   }
 
+  updateUserData = (e) => {
+    e.preventDefault();
+    // console.log(window.sessionStorage)
+    // console.log(this.props)
+    fetch(`http://localhost:3000/users/${this.state.id}`, {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        user: {...this.state}
+      })
+    })
+    .then(response => response.json())
+    .then(resp => {
+      console.log(resp)
+      // window.sessionStorage.setItem("token", resp.token)
+      // this.props.logInUser(resp)
+      // this.props.history.push('/home');
+    })
+  }
+
 
   render(){
     const usStatesArray = ["AK","AL","AR","AS","AZ","CA","CO","CT","DC","DE","FL","GA","GU","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY","OH","OK","OR","PA","PR","RI","SC","SD","TN","TX","UT","VA","VI","VT","WA","WI","WV","WY"];
 
     return <div className="authform">
       <h1> This is the Profile Page </h1>
-      <Form className="login-form" onSubmit={this.handleSubmit}>
+      <Form className="login-form" onSubmit={this.updateUserData}>
         <Form.Row>
           <Form.Group as={Col} controlId="formGridEmail">
             <Form.Label>Email</Form.Label>
@@ -103,7 +128,7 @@ class UserProfile extends React.Component {
         </Form.Group>
 
         <Button variant="primary" type="submit" className="btn-block">
-          Submit
+          UPDATE PROFILE INFO
         </Button>
       </Form>
     </div>

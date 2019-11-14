@@ -53,11 +53,8 @@ class Container extends React.Component {
       <h2>Welcome to our Online Seed Store</h2>
       {/* <h1>STATUS: {this.props.loginStatus}</h1> */}
       <p>Feel free to look at our catalogue of tree seeds available</p>
-      <ProductCollection allProducts={this.getData()} handleMoreButton={this.handleMoreButton}/>
-       {/* addToCart = {this.props.addToCart} handleMoreButton={this.props.handleMoreButton}/> */}
-
+      <ProductCollection allProducts={this.getData()} handleMoreButton={this.handleMoreButton} addToCart = {this.props.addToCart}/>
     </div>
-
   }
 }
 export default Container

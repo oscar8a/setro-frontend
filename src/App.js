@@ -23,7 +23,8 @@ class App extends React.Component {
     idx: 0,
     searchTerm: "",
     loggedInUserId: null,
-    token: null
+    token: null,
+    cart: []
   }
 
   isLoggedIn(){
@@ -46,8 +47,7 @@ class App extends React.Component {
       loginStatus: true,
       user: data
     })
-    // window.sessionStorage.setItem("token", data.jwt);
-    history.push('/home');
+    // this.setCart()
   }
 
   logOutUser = () => {
@@ -55,16 +55,61 @@ class App extends React.Component {
       loginStatus: false,
       user: {}
     })
-    // window.sessionStorage.clear();
-    // history.push("/login")
+  }
+
+  setCart = () => {
+    fetch('http://localhost:3000/cart', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: {
+        ...this.state.user
+      }
+    })
+    .then(resp => resp.json())
+    .then(data => console.log(data))
+  }
+
+  checkUserOrder = () => {
+    fetch('http://localhost:3000/orders', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: {
+
+      }
+    })
+  }
+
+  addToCart = (item) => {
+    console.log(item)
+    fetch('http://localhost:3000/', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      }
+    })
+    // .then(resp => resp.json())
+    // .then(data => {
+    //   this.setState({
+    //     allProductsData: data
+    //   })
+    // })
   }
 
   componentDidMount(){
-    console.log(this.state)
+    console.log("APP STATE", this.state)
   }
 
   render(){
-      
     return <Router history={history}>
       {
         this.isLoggedIn()
@@ -81,9 +126,11 @@ class App extends React.Component {
 
         <Route exact path="/signup" render={props => (<Signup { ...props } loginStatus={this.state.loginStatus} logInUser={this.logInUser}/>)} />
 
-        <Route path="/home" render={props => (<Container { ...props } loginStatus={this.state.loginStatus} />)}/>
+        <Route path="/home" render={props => (<Container { ...props } loginStatus={this.state.loginStatus} addToCart={this.addToCart}/>)}/>
 
         <Route path="/profile" render={props => (<UserProfile { ...props }/>)}/>
+
+        <Route path="/cart" render={props => (<Cart { ...props } />)} />
 
 
 
@@ -91,15 +138,6 @@ class App extends React.Component {
 
         <Route path="*" component={NotFound} />
       </Switch>
-      
-      {/* <div>
-        <header className='App-header' ><Navigation /></header>
-        <Route exact path="/" render={() => <div className="App"><Container addToCart={this.addToCart} allProducts={this.getAllData()} handleMoreButton={this.handleMoreButton} isLoggedIn={this.isLoggedIn} /></div>} />
-        <Route exact path="/signup" component={signup} />
-        <Route exact path="/login" render={() => <Login logInUser={this.logInUser} />} token={this.state.token} loggedInUserId={this.state.loggedInUserId} />
-        <Route exact path="/cart" component={cart} />
-        <Route exact path="/profile" component={userProfile} />
-      </div> */}
     </Router>
   }
 }
