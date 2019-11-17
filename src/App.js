@@ -23,7 +23,8 @@ class App extends React.Component {
     allProductsData: [],
     idx: 0,
     // searchTerm: "",
-    cart: []
+    cart: [],
+    cartID: null,
   }
 
   isLoggedIn(){
@@ -42,10 +43,10 @@ class App extends React.Component {
   }
 
   logInUser = (data) => {
-    console.log('loginuser', data)
     this.setState({
       user: data.user,
-      token: data.jwt
+      token: data.jwt,
+      loginStatus: true,
     })
     this.setCart();
   }
@@ -58,7 +59,7 @@ class App extends React.Component {
   }
 
   setCart = () => {
-    fetch('http://localhost:3000/myorders', {
+    fetch('http://localhost:3000/cart', {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
@@ -66,41 +67,68 @@ class App extends React.Component {
       }
     })
     .then(resp => resp.json())
-    .then(data => console.log(data))
-    // , {
-    //   method: 'GET',
-    //   headers: {
-    //     Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
-    //     'Content-Type': 'application/json',
-    //     'Accept': 'application/json'
-    //   }
-    // })
-    // .then(resp => resp.json())
-    // .then(data => console.log(data))
+    .then(data => this.setState({
+      ...this.state.cartID = data.id
+    }, () => console.log("APP STATE", this.state))
+    );
+  }
+
+  addItemsToOrder = () => {
+    fetch('http://localhost:3000/order_products', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        order_id: this.state.cartID,
+        // product_id: item.id,
+        quantity: 1
+      })
+    })
+    .then(resp => resp.json())
+    .then(data => {
+      console.log(data)
+    })
+  }
+
+  addItemToCart = (item) => {
+    let containsItem = false, newQuantity = 0;
+
+    let newCart = this.state.cart.map(cartItem => {
+      if (cartItem.order_id === item.order_id && cartItem.product_id === item.product_id) {
+        containsItem = true;
+        newQuantity = cartItem.quantity;
+        newQuantity ++; 
+        return {...cartItem, quantity: newQuantity}
+      } 
+      return {...cartItem}
+    })
+
+    if (!containsItem) {
+      newCart = [...newCart, {...item}];
+    }
+
+    this.setState({ cart: newCart })
   }
 
   addToCart = (item) => {
-    this.setState({
-      ...this.state.cart.push(item)
-    })
-    console.log(this.state)
-    // fetch('http://localhost:3000/myorderproducts', {
-    //   method: 'POST',
-    //   headers: {
-    //     Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
-    //     'Content-Type': 'application/json',
-    //     Accept: 'application/json'
-    //   },
-    // })
-    // .then(resp => resp.json())
-    // .then(data => {
-    //   console.log(data)
-      // this.setState({
-      //   allProductsData: data
-      // })
-    // })
-  }
+    const cart_item = {
+      order_id: this.state.cartID,
+      product_id: item.id,
+      quantity: 1
+    }
 
+    if (this.state.cart.length !== 0) {
+      this.addItemToCart(cart_item);
+    } else {
+      this.setState({
+        ...this.state.cart.push(cart_item)
+      })
+    }
+  }
+          
   componentDidMount(){
     if (!!window.sessionStorage.getItem("token")) {
       this.setState({
@@ -109,9 +137,9 @@ class App extends React.Component {
       }, () => console.log("APP STATE", this.state));
     }
   }
-
-  render(){
-    return <Router history={history}>
+              
+    render(){
+      return <Router history={history}>
       {
         this.isLoggedIn()
         ?
