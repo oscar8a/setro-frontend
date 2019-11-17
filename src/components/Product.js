@@ -19,7 +19,11 @@ class Product extends Component {
         {productObj.origin} | {productObj.country}
       </Card.Text>
     </Card.Body>
-    <Card.Footer><Button variant="light" onClick={() => this.props.addToCart(productObj)}> ADD TO <span role='img' aria-label="cart">🛒</span></Button></Card.Footer>
+    <Card.Footer><Button variant="light" onClick={() => this.props.addToCart(productObj)}> ADD TO <span role='img' aria-label="cart">🛒</span></Button>
+    <Button>
+      $ {productObj.price}
+    </Button>
+    </Card.Footer>
     </Card>
   }
 

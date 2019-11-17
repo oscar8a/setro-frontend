@@ -72,30 +72,19 @@ class App extends React.Component {
     .then(data => console.log(data))
   }
 
-  checkUserOrder = () => {
-    fetch('http://localhost:3000/orders', {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      },
-      body: {
-
-      }
-    })
-  }
-
   addToCart = (item) => {
     console.log(item)
-    fetch('http://localhost:3000/', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      }
-    })
+    // fetch('http://localhost:3000/order_products', {
+    //   method: 'POST',
+    //   headers: {
+    //     Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
+    //     'Content-Type': 'application/json',
+    //     Accept: 'application/json'
+    //   },
+    //   body: {
+    //     WOT: "WOT"
+    //   }
+    // })
     // .then(resp => resp.json())
     // .then(data => {
     //   this.setState({
