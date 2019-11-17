@@ -22,8 +22,7 @@ class App extends React.Component {
     token: null,
     allProductsData: [],
     idx: 0,
-    searchTerm: "",
-    loggedInUserId: null,
+    // searchTerm: "",
     cart: []
   }
 
@@ -45,7 +44,6 @@ class App extends React.Component {
   logInUser = (data) => {
     console.log('loginuser', data)
     this.setState({
-      loginStatus: true,
       user: data.user,
       token: data.jwt
     })
@@ -60,41 +58,56 @@ class App extends React.Component {
   }
 
   setCart = () => {
-    fetch(`http://localhost:3000/orders/${this.state.user.id}`, {
+    fetch('http://localhost:3000/myorders', {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
+        'Content-Type': 'application/json'
       }
     })
     .then(resp => resp.json())
     .then(data => console.log(data))
+    // , {
+    //   method: 'GET',
+    //   headers: {
+    //     Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
+    //     'Content-Type': 'application/json',
+    //     'Accept': 'application/json'
+    //   }
+    // })
+    // .then(resp => resp.json())
+    // .then(data => console.log(data))
   }
 
   addToCart = (item) => {
-    console.log(item)
-    // fetch('http://localhost:3000/order_products', {
+    this.setState({
+      ...this.state.cart.push(item)
+    })
+    console.log(this.state)
+    // fetch('http://localhost:3000/myorderproducts', {
     //   method: 'POST',
     //   headers: {
     //     Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
     //     'Content-Type': 'application/json',
     //     Accept: 'application/json'
     //   },
-    //   body: {
-    //     WOT: "WOT"
-    //   }
     // })
     // .then(resp => resp.json())
     // .then(data => {
-    //   this.setState({
-    //     allProductsData: data
-    //   })
+    //   console.log(data)
+      // this.setState({
+      //   allProductsData: data
+      // })
     // })
   }
 
   componentDidMount(){
-    console.log("APP STATE", this.state)
+    if (!!window.sessionStorage.getItem("token")) {
+      this.setState({
+        loginStatus: true,
+        token: window.sessionStorage.getItem("token")
+      }, () => console.log("APP STATE", this.state));
+    }
   }
 
   render(){
@@ -118,7 +131,7 @@ class App extends React.Component {
 
         <Route path="/profile" render={props => (<UserProfile { ...props }/>)}/>
 
-        <Route path="/cart" render={props => (<Cart { ...props } />)} />
+        <Route path="/cart" render={props => (<Cart { ...props } cart={this.state.cart} />)} />
 
 
 
