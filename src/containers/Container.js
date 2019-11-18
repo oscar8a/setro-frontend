@@ -34,7 +34,7 @@ class Container extends React.Component {
   }
 
   getData(){
-    let seedproducts = this.state.allProductsData.slice(this.state.idx, this.state.idx + 10)
+    let seedproducts = this.state.allProductsData.slice(this.state.idx, this.state.idx + 6)
 
     return seedproducts
   }
@@ -42,22 +42,19 @@ class Container extends React.Component {
   handleMoreButton = () => {
     console.log("CLICKING BUTTON")
     this.setState({
-      idx: this.state.idx + 4
+      idx: this.state.idx + 6
     })
   }
   
   render(){
-    const allProductsArray = this.state.allProductsData;
+    // let allProductsArray = this.getData();
 
     return <div className="containerdiv">
       <h2>Welcome to our Online Seed Store</h2>
       {/* <h1>STATUS: {this.props.loginStatus}</h1> */}
       <p>Feel free to look at our catalogue of tree seeds available</p>
-      <ProductCollection allProducts={allProductsArray} />
-       {/* addToCart = {this.props.addToCart} handleMoreButton={this.props.handleMoreButton}/> */}
-
+      <ProductCollection allProducts={this.getData()} handleMoreButton={this.handleMoreButton} addToCart = {this.props.addToCart}/>
     </div>
-
   }
 }
 export default Container

@@ -36,7 +36,9 @@ class Login extends React.Component {
           errors: data.errors
         })
       } else {
+        window.sessionStorage.setItem("token", data.jwt)
         this.props.logInUser(data)
+        this.props.history.push('/home')
       }
     })
   }

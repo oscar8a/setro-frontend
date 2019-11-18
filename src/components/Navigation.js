@@ -5,12 +5,14 @@ import Navbar from 'react-bootstrap/Navbar'
 // import FormControl from 'react-bootstrap/FormControl'
 import Button from 'react-bootstrap/Button'
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar'
-import { Link }  from 'react-router-dom'
+import { Link, withRouter }  from 'react-router-dom'
 
 class Navigation extends React.Component {
 
   handleLogoutClick = () => {
+    window.sessionStorage.clear();
     this.props.logOutUser();
+    this.props.history.push("/login")
   }
   
   render(){
@@ -35,4 +37,4 @@ class Navigation extends React.Component {
      </Navbar>)
   }
 }
-export default Navigation
+export default withRouter(Navigation)

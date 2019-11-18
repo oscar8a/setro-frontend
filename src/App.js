@@ -17,17 +17,17 @@ const URL = 'http://localhost:3000/products/'
 class App extends React.Component {
 
   state = {
-    loginStatus: "NOT LOGGED IN",
+    loginStatus: false,
     user: {},
-    allProductsData: [],
-    idx: 0,
-    searchTerm: "",
-    loggedInUserId: null,
-    token: null
+    token: null,
+    cart: [],
+    itemDetails: [],
+    cartID: null,
   }
 
   isLoggedIn(){
-    return !!this.state.loggedInUserId
+    // return !!this.state.loginStatus
+    return !!window.sessionStorage.getItem("token")
   }
 
   loggedInUserId(){
@@ -42,31 +42,124 @@ class App extends React.Component {
 
   logInUser = (data) => {
     this.setState({
-      loginStatus: "LOGGED IN",
-      user: data
+      user: data.user,
+      token: data.jwt,
+      loginStatus: true,
     })
-    window.sessionStorage.setItem("token", data.jwt);
-    history.push('/home');
+    this.setCart();
   }
 
   logOutUser = () => {
     this.setState({
-      loginStatus: "NOT LOGGED IN",
+      loginStatus: false,
       user: {}
     })
-    window.sessionStorage.clear();
-    this.props.history.push("/login");
   }
 
+  setCart = () => {
+    fetch('http://localhost:3000/cart', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(resp => resp.json())
+    .then(data => this.setState({
+      ...this.state.cartID = data.id
+    }, () => console.log("APP STATE", this.state))
+    );
+  }
+
+  updateCartItemQty = (item) => {
+    console.log(item)
+    fetch(`http://localhost:3000/order_products/${item.id}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        order_id: item.order_id,
+        product_id: item.product_id,
+        quantity: item.quantity
+      })
+    })
+    .then(resp => resp.json())
+    .then(data => {
+      console.log(data)
+    })
+  }
+
+  addItemsToOrder = (item) => {
+    
+    fetch('http://localhost:3000/order_products', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        order_id: item.order_id,
+        product_id: item.product_id,
+        quantity: item.quantity
+      })
+    })
+    .then(resp => resp.json())
+    .then(data => {
+      if (data.errors) {
+        console.log(data.errors)
+      } else {
+      this.setState({
+        ...this.state.cart.push(data)
+      })
+      console.log(data)
+      console.log(this.state)
+    }
+    })
+  }
+
+  addToCart = (item) => {
+    const itemToAdd = {
+      order_id: this.state.cartID,
+      product_id: item.id,
+      quantity: 1
+    }
+
+    let containsItem = false, newQty = 0;
+
+    let newCart = this.state.cart.map(stateCartItem => {
+      if (stateCartItem.order_id === itemToAdd.order_id && stateCartItem.product_id === itemToAdd.product_id) {
+        containsItem = true;
+        newQty = stateCartItem.quantity + 1;
+        stateCartItem.quantity = newQty; //check this
+        this.updateCartItemQty(stateCartItem);
+        return {...stateCartItem, quantity: newQty} //with this
+      } 
+      return {...stateCartItem}
+    })
+
+    if (!containsItem) {
+      this.addItemsToOrder(itemToAdd);
+      this.setState({ ...this.state.itemDetails.push(item) })
+    }
+  }
+          
   componentDidMount(){
-    console.log(this.state)
+    if (!!window.sessionStorage.getItem("token")) {
+      this.setState({
+        loginStatus: true,
+        token: window.sessionStorage.getItem("token")
+      }, () => console.log("APP STATE", this.state));
+    }
   }
-
-  render(){
-      
-    return <Router history={history}>
+              
+    render(){
+      return <Router history={history}>
       {
-        !!window.sessionStorage.getItem("token")
+        this.isLoggedIn()
         ?
         <header><Navigation logOutUser={this.logOutUser}/></header>
         :
@@ -80,25 +173,18 @@ class App extends React.Component {
 
         <Route exact path="/signup" render={props => (<Signup { ...props } loginStatus={this.state.loginStatus} logInUser={this.logInUser}/>)} />
 
-        <Route path="/home" render={props => (<Container { ...props } loginStatus={this.state.loginStatus} />)}/>
+        <Route path="/home" render={props => (<Container { ...props } loginStatus={this.state.loginStatus} addToCart={this.addToCart}/>)}/>
 
         <Route path="/profile" render={props => (<UserProfile { ...props }/>)}/>
 
+        <Route path="/cart" render={props => (<Cart { ...props } cart={this.state.cart} itemDetails={this.state.itemDetails} />)} />
 
 
 
 
-        <Route component={NotFound} />
+
+        <Route path="*" component={NotFound} />
       </Switch>
-      
-      {/* <div>
-        <header className='App-header' ><Navigation /></header>
-        <Route exact path="/" render={() => <div className="App"><Container addToCart={this.addToCart} allProducts={this.getAllData()} handleMoreButton={this.handleMoreButton} isLoggedIn={this.isLoggedIn} /></div>} />
-        <Route exact path="/signup" component={signup} />
-        <Route exact path="/login" render={() => <Login logInUser={this.logInUser} />} token={this.state.token} loggedInUserId={this.state.loggedInUserId} />
-        <Route exact path="/cart" component={cart} />
-        <Route exact path="/profile" component={userProfile} />
-      </div> */}
     </Router>
   }
 }
