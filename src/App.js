@@ -20,10 +20,8 @@ class App extends React.Component {
     loginStatus: false,
     user: {},
     token: null,
-    allProductsData: [],
-    idx: 0,
-    // searchTerm: "",
     cart: [],
+    itemDetails: [],
     cartID: null,
   }
 
@@ -73,18 +71,19 @@ class App extends React.Component {
     );
   }
 
-  addItemsToOrder = () => {
-    fetch('http://localhost:3000/order_products', {
-      method: 'POST',
+  updateCartItemQty = (item) => {
+    console.log(item)
+    fetch(`http://localhost:3000/order_products/${item.id}`, {
+      method: 'PUT',
       headers: {
         Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
       body: JSON.stringify({
-        order_id: this.state.cartID,
-        // product_id: item.id,
-        quantity: 1
+        order_id: item.order_id,
+        product_id: item.product_id,
+        quantity: item.quantity
       })
     })
     .then(resp => resp.json())
@@ -93,39 +92,58 @@ class App extends React.Component {
     })
   }
 
-  addItemToCart = (item) => {
-    let containsItem = false, newQuantity = 0;
-
-    let newCart = this.state.cart.map(cartItem => {
-      if (cartItem.order_id === item.order_id && cartItem.product_id === item.product_id) {
-        containsItem = true;
-        newQuantity = cartItem.quantity;
-        newQuantity ++; 
-        return {...cartItem, quantity: newQuantity}
-      } 
-      return {...cartItem}
+  addItemsToOrder = (item) => {
+    
+    fetch('http://localhost:3000/order_products', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        order_id: item.order_id,
+        product_id: item.product_id,
+        quantity: item.quantity
+      })
     })
-
-    if (!containsItem) {
-      newCart = [...newCart, {...item}];
+    .then(resp => resp.json())
+    .then(data => {
+      if (data.errors) {
+        console.log(data.errors)
+      } else {
+      this.setState({
+        ...this.state.cart.push(data)
+      })
+      console.log(data)
+      console.log(this.state)
     }
-
-    this.setState({ cart: newCart })
+    })
   }
 
   addToCart = (item) => {
-    const cart_item = {
+    const itemToAdd = {
       order_id: this.state.cartID,
       product_id: item.id,
       quantity: 1
     }
 
-    if (this.state.cart.length !== 0) {
-      this.addItemToCart(cart_item);
-    } else {
-      this.setState({
-        ...this.state.cart.push(cart_item)
-      })
+    let containsItem = false, newQty = 0;
+
+    let newCart = this.state.cart.map(stateCartItem => {
+      if (stateCartItem.order_id === itemToAdd.order_id && stateCartItem.product_id === itemToAdd.product_id) {
+        containsItem = true;
+        newQty = stateCartItem.quantity + 1;
+        stateCartItem.quantity = newQty; //check this
+        this.updateCartItemQty(stateCartItem);
+        return {...stateCartItem, quantity: newQty} //with this
+      } 
+      return {...stateCartItem}
+    })
+
+    if (!containsItem) {
+      this.addItemsToOrder(itemToAdd);
+      this.setState({ ...this.state.itemDetails.push(item) })
     }
   }
           
@@ -159,7 +177,7 @@ class App extends React.Component {
 
         <Route path="/profile" render={props => (<UserProfile { ...props }/>)}/>
 
-        <Route path="/cart" render={props => (<Cart { ...props } cart={this.state.cart} />)} />
+        <Route path="/cart" render={props => (<Cart { ...props } cart={this.state.cart} itemDetails={this.state.itemDetails} />)} />
 
 
 
