@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import Product from './Product'
-import { CardDeck, Row, Col, Container } from 'react-bootstrap'
+import { Row, Col, Container } from 'react-bootstrap';
+//CardDeck
 import Button from 'react-bootstrap/Button'
 
 const ProductCollection = (props) => {

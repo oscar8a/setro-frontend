@@ -12,7 +12,7 @@ import UserProfile from './components/UserProfile';
 import NotFound from './components/NotFound';
 import history from './history';
 
-const URL = 'http://localhost:3000/products/'
+// const URL = 'http://localhost:3000/products/'
 
 class App extends React.Component {
 
@@ -28,20 +28,10 @@ class App extends React.Component {
     return !!window.sessionStorage.getItem("token")
   }
 
-  loggedInUserId(){
-    return this.state.loggedInUserId
-  }
-
-  setLoggedInUserId = (userId) => {
-    this.setState({
-      loggedInUserId: userId
-    })
-  }
-
   logInUser = (data) => {
     this.setState({
       user: data.user,
-      token: data.jwt,
+      token: data.token,
     })
     this.setCart();
   }
@@ -81,7 +71,8 @@ class App extends React.Component {
     .then(data => {
       console.log("setCart Fetch",data)
       this.setState({
-      ...this.state.cartID = data.id
+      // ...this.state.cartID = data.id
+        cartID: data.id
       })
       window.sessionStorage.setItem("cartID", data.id)
       this.fetchCartProducts();
@@ -129,9 +120,7 @@ class App extends React.Component {
       } else {
       this.setState({
         ...this.state.cart.push(data)
-      })
-      console.log(data)
-      console.log(this.state)
+      }, () => console.log(data, this.state))
     }
     })
   }
@@ -156,7 +145,6 @@ class App extends React.Component {
       return {...stateCartItem}
     })
 
-    // console.log("before conditional",containsItem)
     if (!containsItem) {
       this.addItemsToOrder(itemToAdd);
       this.setState({ ...this.state.itemDetails.push(item) })
@@ -168,8 +156,8 @@ class App extends React.Component {
       this.setState({
         token: window.sessionStorage.getItem("token")
       });
+      this.setCart();
     }
-    this.setCart();
   }
               
     render(){

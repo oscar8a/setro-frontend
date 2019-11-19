@@ -1,6 +1,6 @@
 import React from 'react';
 import ProductCollection from '../components/ProductCollection';
-import Navigation from '../components/Navigation'
+import Navigation from '../components/Navigation';
 
 class Container extends React.Component {
 
@@ -47,7 +47,6 @@ class Container extends React.Component {
   }
   
   render(){
-    // let allProductsArray = this.getData();
 
     return <div className="containerdiv">
       <h2>Welcome to our Online Seed Store</h2>
