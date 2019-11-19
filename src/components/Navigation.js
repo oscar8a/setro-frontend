@@ -17,21 +17,22 @@ class Navigation extends React.Component {
   
   render(){
     return(<Navbar variant="dark" className='App-header'>
-      <Navbar.Brand href="/"><span role='img' aria-label="pine and a nut">🌲🌰</span> Seeds Store <span role='img' aria-label="pine and a nut">🌲🌰</span></Navbar.Brand>
+      <Navbar.Brand href="/"><span role='img' aria-label="pine and a nut">🌲🌰</span> Online Tree Seeds Store <span role='img' aria-label="pine and a nut">🌲🌰</span></Navbar.Brand>
       <Nav className="mr-auto">
-        <Link to="/home">Home</Link>
       </Nav>
       &nbsp;&nbsp;&nbsp;
       <Nav>
       <ButtonToolbar>
-      <Button variant="light"><Link to={"/cart"}><span role='img' aria-label="cart">🛒</span></Link></Button>
+      <Button variant="light"><Link to="/home">HOME</Link></Button>
       &nbsp;&nbsp;&nbsp;
-      <Button variant="light"><Link to={"/profile"} >Profile</Link></Button>
+      <Button variant="light"><Link to={"/cart"}><span role='img' aria-label="cart">🛒 CART</span></Link></Button>
       &nbsp;&nbsp;&nbsp;
+      <Button variant="light"><Link to={"/profile"} >PROFILE</Link></Button>
+      {/* &nbsp;&nbsp;&nbsp;
       <Button variant="light"><Link to={"/signup"} >Sign Up</Link></Button>
       &nbsp;&nbsp;&nbsp;
-      <Button variant="light"><Link to={"/login"} >Log In</Link></Button>
-      &nbsp;&nbsp;&nbsp;        <Button variant="danger" onClick={this.handleLogoutClick}>Log Out</Button>
+      <Button variant="light"><Link to={"/login"} >Log In</Link></Button> */}
+      &nbsp;&nbsp;&nbsp;        <Button variant="danger" onClick={this.handleLogoutClick}>LOG OUT</Button>
       </ButtonToolbar>
       </Nav>
      </Navbar>)

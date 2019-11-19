@@ -1,6 +1,6 @@
 import React from 'react';
 import ProductCollection from '../components/ProductCollection';
-import Navigation from '../components/Navigation'
+import Navigation from '../components/Navigation';
 
 class Container extends React.Component {
 
@@ -47,11 +47,9 @@ class Container extends React.Component {
   }
   
   render(){
-    // let allProductsArray = this.getData();
 
     return <div className="containerdiv">
       <h2>Welcome to our Online Seed Store</h2>
-      {/* <h1>STATUS: {this.props.loginStatus}</h1> */}
       <p>Feel free to look at our catalogue of tree seeds available</p>
       <ProductCollection allProducts={this.getData()} handleMoreButton={this.handleMoreButton} addToCart = {this.props.addToCart}/>
     </div>

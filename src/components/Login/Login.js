@@ -1,7 +1,7 @@
-import React from 'react'
-import { withRouter } from 'react-router-dom'
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
+import React from 'react';
+import { Redirect , withRouter } from 'react-router-dom';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 
 class Login extends React.Component {
@@ -30,13 +30,12 @@ class Login extends React.Component {
     })
     .then(response => response.json())
     .then(data => {
-      console.log(data)
       if (data.errors) {
         this.setState({
           errors: data.errors
         })
       } else {
-        window.sessionStorage.setItem("token", data.jwt)
+        window.sessionStorage.setItem("token", data.token)
         this.props.logInUser(data)
         this.props.history.push('/home')
       }
@@ -58,9 +57,11 @@ class Login extends React.Component {
     {
       <section className="App container-fluid bg">
         <section className="row justify-content-center">
+          <div className="landingpagetitle">
+            <h1>Welcome to Our Tree Seeds Store</h1>
+            <h2>Login or Create a new User by clicking the signup form button</h2>
+          </div>
           <section className="col-12 col-sm-3 col-md-4">
-            <h1>THIS IS THE LOGIN PAGE</h1>
-            <h1>STATUS: {this.props.loginStatus}</h1>
             <Form className="authform login-form" onSubmit={this.logInSubmit}>
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
@@ -75,6 +76,7 @@ class Login extends React.Component {
               <Button variant="primary" className="btn-block" type="submit">
                   Submit
               </Button>
+              <Button className="btn-block" variant="info" onClick={()=>this.props.history.push('/signup')}>Sign Up Form</Button>
             </Form>
           </section>
         </section>

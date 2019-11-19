@@ -6,53 +6,57 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Navigation from './components/Navigation';
 import Signup from './components/Signup';
 import Login from './components/Login/Login';
-import Cart from './components/Cart';
+import Cart from './components/Cart/Cart';
 import Container from './containers/Container';
 import UserProfile from './components/UserProfile';
 import NotFound from './components/NotFound';
 import history from './history';
 
-const URL = 'http://localhost:3000/products/'
+// const URL = 'http://localhost:3000/products/'
 
 class App extends React.Component {
 
   state = {
-    loginStatus: false,
     user: {},
     token: null,
     cart: [],
-    itemDetails: [],
     cartID: null,
+    productsInCart: [],
+    checkedOut: false,
   }
 
   isLoggedIn(){
-    // return !!this.state.loginStatus
     return !!window.sessionStorage.getItem("token")
-  }
-
-  loggedInUserId(){
-    return this.state.loggedInUserId
-  }
-
-  setLoggedInUserId = (userId) => {
-    this.setState({
-      loggedInUserId: userId
-    })
   }
 
   logInUser = (data) => {
     this.setState({
       user: data.user,
-      token: data.jwt,
-      loginStatus: true,
+      token: data.token,
     })
     this.setCart();
   }
 
   logOutUser = () => {
     this.setState({
-      loginStatus: false,
       user: {}
+    })
+  }
+
+  fetchCartProducts = () => {
+    fetch(`http://localhost:3000/myorderproducts/${window.sessionStorage.getItem("cartID")}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    })
+    .then(resp => resp.json())
+    .then(data => {
+      this.setState({
+        cart: data
+      }, () => console.log("APP STATE", this.state))
     })
   }
 
@@ -65,14 +69,18 @@ class App extends React.Component {
       }
     })
     .then(resp => resp.json())
-    .then(data => this.setState({
-      ...this.state.cartID = data.id
-    }, () => console.log("APP STATE", this.state))
-    );
+    .then(data => {
+      console.log("setCart Fetch",data)
+      this.setState({
+        cartID: data.id,
+        checkedOut: data.status,
+      })
+      window.sessionStorage.setItem("cartID", data.id)
+      this.fetchCartProducts();
+    })
   }
 
   updateCartItemQty = (item) => {
-    console.log(item)
     fetch(`http://localhost:3000/order_products/${item.id}`, {
       method: 'PUT',
       headers: {
@@ -88,12 +96,13 @@ class App extends React.Component {
     })
     .then(resp => resp.json())
     .then(data => {
-      console.log(data)
+      this.setState({
+        cartTotal: this.state.cartTotal + 4.99
+      }, () => console.log(data, this.state))
     })
   }
 
   addItemsToOrder = (item) => {
-    
     fetch('http://localhost:3000/order_products', {
       method: 'POST',
       headers: {
@@ -113,24 +122,23 @@ class App extends React.Component {
         console.log(data.errors)
       } else {
       this.setState({
+        cartTotal: this.state.cartTotal + 4.99,
         ...this.state.cart.push(data)
-      })
-      console.log(data)
-      console.log(this.state)
+      }, () => console.log(data, this.state))
     }
     })
   }
 
   addToCart = (item) => {
     const itemToAdd = {
-      order_id: this.state.cartID,
+      order_id: parseInt(window.sessionStorage.getItem("cartID"), 10),
       product_id: item.id,
       quantity: 1
     }
 
     let containsItem = false, newQty = 0;
 
-    let newCart = this.state.cart.map(stateCartItem => {
+    const newCart = this.state.cart.map(stateCartItem => {
       if (stateCartItem.order_id === itemToAdd.order_id && stateCartItem.product_id === itemToAdd.product_id) {
         containsItem = true;
         newQty = stateCartItem.quantity + 1;
@@ -143,16 +151,22 @@ class App extends React.Component {
 
     if (!containsItem) {
       this.addItemsToOrder(itemToAdd);
-      this.setState({ ...this.state.itemDetails.push(item) })
+      // this.setState({ ...this.state.itemDetails.push(item) })
     }
+  }
+
+  updateCheckedOut = () => {
+    this.setState({
+      checkedOut: true
+    })
   }
           
   componentDidMount(){
     if (!!window.sessionStorage.getItem("token")) {
       this.setState({
-        loginStatus: true,
         token: window.sessionStorage.getItem("token")
-      }, () => console.log("APP STATE", this.state));
+      });
+      this.setCart();
     }
   }
               
@@ -167,17 +181,17 @@ class App extends React.Component {
       }
       <Switch>
 
-        <Route exact path="/" render={props => (<Login { ...props } loginStatus={this.state.loginStatus} logInUser={this.logInUser}/>)}/>
+        <Route exact path="/" render={props => (<Login { ...props } logInUser={this.logInUser}/>)}/>
 
-        <Route exact path="/login" render={props => (<Login { ...props } loginStatus={this.state.loginStatus} logInUser={this.logInUser}/>)}/>
+        <Route exact path="/login" render={props => (<Login { ...props } logInUser={this.logInUser}/>)}/>
 
-        <Route exact path="/signup" render={props => (<Signup { ...props } loginStatus={this.state.loginStatus} logInUser={this.logInUser}/>)} />
+        <Route exact path="/signup" render={props => (<Signup { ...props } logInUser={this.logInUser}/>)} />
 
-        <Route path="/home" render={props => (<Container { ...props } loginStatus={this.state.loginStatus} addToCart={this.addToCart}/>)}/>
+        <Route path="/home" render={props => (<Container { ...props } addToCart={this.addToCart}/>)}/>
 
         <Route path="/profile" render={props => (<UserProfile { ...props }/>)}/>
 
-        <Route path="/cart" render={props => (<Cart { ...props } cart={this.state.cart} itemDetails={this.state.itemDetails} />)} />
+        <Route path="/cart" render={props => (<Cart { ...props } cart={this.state.cart} updateCheckedOut={this.updateCheckedOut}/>)} />
 
 
 

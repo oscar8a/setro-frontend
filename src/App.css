@@ -41,7 +41,7 @@
 
 .login-form {
   position: relative;
-  top: 15vh;
+  top: 10px; /* 10vh */
   background: #009411f3;
   padding: 30px;
   border-radius: 10px;
@@ -54,7 +54,23 @@
   padding: 30px;
 }
 
+.cartcontainerdiv {
+  background-color: #0073ff4c;
+  position: relative;
+  padding: 30px;
+  min-height: 100vh;
+  height: 100%;
+}
+
 .productcard {
   min-height: 300px;
   margin-bottom: 30px;
+}
+
+.landingpagetitle {
+  background-color: #744602fa;
+  padding: 30px;
+  border-radius: 30px;
+  color: rgb(230, 230, 230);
+  margin: 20px;
 }
