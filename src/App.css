@@ -54,6 +54,14 @@
   padding: 30px;
 }
 
+.cartcontainerdiv {
+  background-color: #0073ff4c;
+  position: relative;
+  padding: 30px;
+  min-height: 100vh;
+  height: 100%;
+}
+
 .productcard {
   min-height: 300px;
   margin-bottom: 30px;

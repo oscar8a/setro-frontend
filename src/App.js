@@ -20,8 +20,8 @@ class App extends React.Component {
     user: {},
     token: null,
     cart: [],
-    itemDetails: [],
     cartID: null,
+    cartTotal: 0,
   }
 
   isLoggedIn(){
@@ -71,7 +71,6 @@ class App extends React.Component {
     .then(data => {
       console.log("setCart Fetch",data)
       this.setState({
-      // ...this.state.cartID = data.id
         cartID: data.id
       })
       window.sessionStorage.setItem("cartID", data.id)
@@ -95,7 +94,9 @@ class App extends React.Component {
     })
     .then(resp => resp.json())
     .then(data => {
-      console.log(data, this.state)
+      this.setState({
+        cartTotal: this.state.cartTotal + 4.99
+      }, () => console.log(data, this.state))
     })
   }
 
@@ -119,6 +120,7 @@ class App extends React.Component {
         console.log(data.errors)
       } else {
       this.setState({
+        cartTotal: this.state.cartTotal + 4.99,
         ...this.state.cart.push(data)
       }, () => console.log(data, this.state))
     }
@@ -147,7 +149,7 @@ class App extends React.Component {
 
     if (!containsItem) {
       this.addItemsToOrder(itemToAdd);
-      this.setState({ ...this.state.itemDetails.push(item) })
+      // this.setState({ ...this.state.itemDetails.push(item) })
     }
   }
           
@@ -181,7 +183,7 @@ class App extends React.Component {
 
         <Route path="/profile" render={props => (<UserProfile { ...props }/>)}/>
 
-        <Route path="/cart" render={props => (<Cart { ...props } cart={this.state.cart} itemDetails={this.state.itemDetails} />)} />
+        <Route path="/cart" render={props => (<Cart { ...props } cart={this.state.cart} runningTotal={this.state.cartTotal}/>)} />
 
 
 
