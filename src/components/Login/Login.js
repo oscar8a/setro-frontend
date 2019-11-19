@@ -30,7 +30,6 @@ class Login extends React.Component {
     })
     .then(response => response.json())
     .then(data => {
-      console.log(data)
       if (data.errors) {
         this.setState({
           errors: data.errors

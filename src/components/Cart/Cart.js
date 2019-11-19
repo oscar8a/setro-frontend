@@ -3,13 +3,18 @@ import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 // import { CardDeck, Row, Col, Container } from 'react-bootstrap';
 import CartProduct from '../Cart/CartProduct';
+import Alert from 'react-bootstrap/Alert';
+import Spinner from 'react-bootstrap/Spinner';
 
 class Cart extends React.Component {
 
   state = {
+    cartTotal: 0,
     cart: [],
+    cartProducts: [],
     itemCount: [],
-    checkedOut: false
+    checkedOut: false,
+    isLoaded: false
   }
 
   fetchCartItems = () => {
@@ -23,22 +28,17 @@ class Cart extends React.Component {
     })
     .then(resp => resp.json())
     .then(data => this.setState({
-      cart: data,
-      itemCount: this.props.cart
-    },() => console.log(this.state)))
+      cartProducts: data,
+      cart: this.props.cart,
+      isLoaded: true
+    },() => this.addToTotal() ))
   }
 
   componentDidMount(){
-    console.log("componentdidmount",this.props.cart)
+    console.log("componentdidmountPROPS",this.props)
+    console.log("componentdidmountSTATE",this.state)
     
     this.fetchCartItems();
-  }
-
-  getQty = (item) => {
-    console.log(item)
-    const itemObj = this.state.itemCount.find(x =>x.product_id === item.id)
-    
-    return itemObj.quantity
   }
 
   createTable = () => {
@@ -54,28 +54,95 @@ class Cart extends React.Component {
       </tr>
     </thead>
     <tbody>
-        {this.renderProducts()}
+        {
+        this.state.isLoaded
+        ?
+        this.renderProducts()
+        :
+        null
+        }
     </tbody>
   </Table>
   }
 
   renderProducts(){
-    return this.state.cart.map(singleProduct => <CartProduct product={singleProduct} key={singleProduct.id} cart={this.props.cart} qty={this.getQty(singleProduct)}/>)
+    if (!!this.state.cartProducts.length) {
+      return this.state.cartProducts.map(singleProduct => <CartProduct product={singleProduct} key={singleProduct.id} cart={this.props.cart} qty={this.getQty(singleProduct.id)}/>)
+    }
+  }
+
+  getQty(productID){
+    const item = this.state.cart.find(item => item.product_id === productID)
+
+    return item.quantity
+  }
+
+  addToTotal = () => {
+    console.log("addtototal",this.state)
+    let runningTotal = 0;
+
+    let itemObj = this.state.cart.forEach(cartItem => {
+      let itemProd = this.state.cartProducts.forEach(cartProd => {
+        if (cartItem.product_id === cartProd.id) {
+          
+          runningTotal = runningTotal + (cartItem.quantity * cartProd.price)
+
+          runningTotal = Math.round(runningTotal * 100) / 100
+
+          console.log(runningTotal)
+
+        }
+      })
+    })
+    
+    this.setState({
+      cartTotal: runningTotal
+    })
+  }
+
+  submitOrder = () => {
+    console.log("submit order")
+    fetch(`http://localhost:3000/orders/${window.sessionStorage.getItem("cartID")}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        status: true
+      })
+    })
+    .then(resp => resp.json())
+    .then(data => this.setState({
+      checkedOut: true
+    }, () => this.props.updateCheckedOut(), console.log(this.state)))
   }
 
   render(){
     return <div className="cartcontainerdiv">
       <h2> This is the CART </h2>
       {
+        this.state.isLoaded
+        ?
         this.createTable()
+        :
+        <Spinner animation="border" variant="success" />
       // this.state.cart.map(singleProduct => <Col md="4" key={singleProduct.id}><CartProduct product={singleProduct} key={singleProduct.id} cart={this.props.cart} qty={this.getQty(singleProduct)}/></Col>)
       }
       <div>
-      <h2> Your total is: {this.props.runningTotal}</h2>
-      <Button variant="success" size="lg" block>
+      <h2> Your total is: {this.state.cartTotal}</h2>
+      <Button variant="success" size="lg" block onClick={this.submitOrder}>
         Place Order
       </Button>
       </div>
+      {
+        this.state.checkedOut
+        ?
+        <Alert variant="success"> Your Order has Been Placed! </Alert>
+        :
+        null
+      }
       </div>
   }
 

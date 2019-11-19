@@ -21,7 +21,8 @@ class App extends React.Component {
     token: null,
     cart: [],
     cartID: null,
-    cartTotal: 0,
+    productsInCart: [],
+    checkedOut: false,
   }
 
   isLoggedIn(){
@@ -71,7 +72,8 @@ class App extends React.Component {
     .then(data => {
       console.log("setCart Fetch",data)
       this.setState({
-        cartID: data.id
+        cartID: data.id,
+        checkedOut: data.status,
       })
       window.sessionStorage.setItem("cartID", data.id)
       this.fetchCartProducts();
@@ -152,6 +154,12 @@ class App extends React.Component {
       // this.setState({ ...this.state.itemDetails.push(item) })
     }
   }
+
+  updateCheckedOut = () => {
+    this.setState({
+      checkedOut: true
+    })
+  }
           
   componentDidMount(){
     if (!!window.sessionStorage.getItem("token")) {
@@ -183,7 +191,7 @@ class App extends React.Component {
 
         <Route path="/profile" render={props => (<UserProfile { ...props }/>)}/>
 
-        <Route path="/cart" render={props => (<Cart { ...props } cart={this.state.cart} runningTotal={this.state.cartTotal}/>)} />
+        <Route path="/cart" render={props => (<Cart { ...props } cart={this.state.cart} updateCheckedOut={this.updateCheckedOut}/>)} />
 
 
 
