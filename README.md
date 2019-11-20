@@ -22,10 +22,6 @@ First, I will begin with the Back end setup.
 
 ## Setting up the Rails API:
 
-Start up the Rails Server ### rails server
-npm start
-Runs the app in the development mode.
-Open http://localhost:3000 to view it in the browser.
-
-The page will reload if you make edits.
-You will also see any link errors in the console.
+Setting up the Rails API:
+1.make sure the database is created by running ### `rails db:create`
+2. Start up the Rails Server ### `rails server`
