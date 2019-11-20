@@ -23,5 +23,5 @@ First, I will begin with the Back end setup.
 ## Setting up the Rails API:
 
 Setting up the Rails API:
-1.make sure the database is created by running ### `rails db:create`
-2. Start up the Rails Server ### `rails server`
+1.make sure the database is created by running `rails db:create`
+2. Start up the Rails Server `rails server`
