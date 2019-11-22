@@ -22,11 +22,11 @@ First, I will begin with the Back end setup.
 
 ### Setting up the Rails API:
 
-Setting up the Rails API:
+Setting up the [Rails Back-end API](https://github.com/ozkr8a/setro-backend):
 1.make sure the database is created by running `rails db:create`
 2. Start up the Rails Server `rails server`
 
-### Launch Front-end React App
+### Launch Front-end React App:
 
 1. `npm start` runs the app in the development mode.
 Open http://localhost:3000 to view it in the browser.
