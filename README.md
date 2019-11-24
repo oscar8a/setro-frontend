@@ -2,6 +2,7 @@
 
 This is an Online store that allows you to browse through a fixed database of tree seed products. It has Cart functionality that also shows you the quantity, prices, and total of your oder to be placed.
 
+###[Video Demo](https://youtu.be/B_ix-PXPwNQ)
 
 ## Usage
 
