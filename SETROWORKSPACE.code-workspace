@@ -1,11 +1,10 @@
 {
-	"folders": [
-		{
-			"path": "/Users/flatironschool/Documents/Final Projects/setro-react"
-		},
-		{
-			"path": "/Users/flatironschool/Documents/Final Projects/setro"
-		}
-	],
-	"settings": {}
+    "folders": [
+        {
+            "path": "../setro-backend"
+        },
+        {
+            "path": "."
+        }
+    ]
 }
