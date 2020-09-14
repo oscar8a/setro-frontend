@@ -39,11 +39,16 @@ class Container extends React.Component {
     return seedproducts
   }
 
-  handleMoreButton = () => {
-    console.log("CLICKING BUTTON")
-    this.setState({
-      idx: this.state.idx + 6
-    })
+  navigateProduct = (e) => {
+    if (e.target.value === "+" && (this.state.idx < this.state.allProductsData.length - 6)) {
+      this.setState({
+        idx: this.state.idx + 6
+      })
+    } else if (e.target.value === "-" && this.state.idx > 0) {
+      this.setState({
+        idx: this.state.idx - 6
+      })
+    }
   }
   
   render(){
@@ -51,7 +56,7 @@ class Container extends React.Component {
     return <div className="containerdiv">
       <h2>Welcome to our Online Seed Store</h2>
       <p>Feel free to look at our catalogue of tree seeds available</p>
-      <ProductCollection allProducts={this.getData()} handleMoreButton={this.handleMoreButton} addToCart = {this.props.addToCart}/>
+      <ProductCollection allProducts={this.getData()} navigateProduct={this.navigateProduct} addToCart = {this.props.addToCart}/>
     </div>
   }
 }
