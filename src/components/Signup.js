@@ -2,6 +2,7 @@ import React from 'react'
 import { Col, Form } from 'react-bootstrap' //add Row
 import Button from 'react-bootstrap/Button'
 import { withRouter } from 'react-router-dom';
+import styled from 'styled-components';
 
 class Signup extends React.Component {
 
@@ -64,12 +65,21 @@ class Signup extends React.Component {
       this.props.history.push('/home');
     })
   }
-
   render() {
 
     const usStatesArray = ["AK","AL","AR","AS","AZ","CA","CO","CT","DC","DE","FL","GA","GU","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY","OH","OK","OR","PA","PR","RI","SC","SD","TN","TX","UT","VA","VI","VT","WA","WI","WV","WY"];
 
-    return <section className="container-fluid bg">
+
+    const Background = styled.div`
+      background: url('https://cdn.pixabay.com/photo/2019/10/05/23/49/nature-4529056_1280.jpg') no-repeat;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-color: rgba(154, 154, 154, 0.543);
+      background-blend-mode: screen;
+    `;
+
+    return <Background className="container-fluid">
       <section className="row justify-content-center">
         <section className="col-12 col-sm-6 col-md-8">
         <Form className="login-form" onSubmit={this.handleSubmit}>
@@ -131,7 +141,7 @@ class Signup extends React.Component {
       </Form>
       </section>
       </section>
-    </section>
+    </Background>
   }
 
 }

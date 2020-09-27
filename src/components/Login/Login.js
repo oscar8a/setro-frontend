@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect , withRouter } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-
+import styled from 'styled-components';
 
 class Login extends React.Component {
   state ={
@@ -50,12 +50,23 @@ class Login extends React.Component {
   }
 
   render() {
+
+    const Background = styled.div`
+      display: block;
+      background: url('https://cdn.pixabay.com/photo/2019/10/05/23/49/nature-4529056_1280.jpg') no-repeat;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-color: rgba(154, 154, 154, 0.543);
+      background-blend-mode: screen;
+    `;
+
     return <>
     {/* <ul>
       {this.state.errors.map(error => <li>{ error }</li>)}
     </ul> */}
     {
-      <section className="App container-fluid bg">
+      <Background className="App container-fluid">
         <section className="row justify-content-center">
           <div className="landingpagetitle">
             <h1>Welcome to Our Tree Seeds Store</h1>
@@ -80,7 +91,7 @@ class Login extends React.Component {
             </Form>
           </section>
         </section>
-      </section>
+      </Background>
     }
     </>
   }
