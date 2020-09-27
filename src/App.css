@@ -30,15 +30,6 @@
   height: 50%
 }
 
-.bg {
-  background: url('https://www.digitalistmag.com/files/2015/11/forest.jpg') no-repeat;
-  width: 100%;
-  height: 100vh;
-  background-size: cover;
-  background-color: rgba(154, 154, 154, 0.543);
-  background-blend-mode: screen;
-}
-
 .login-form {
   position: relative;
   top: 10px; /* 10vh */
