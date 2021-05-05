@@ -1,6 +1,7 @@
 import React from 'react';
 import ProductCollection from '../components/ProductCollection';
 import Navigation from '../components/Navigation';
+import IntroText from '../components/Text/IntroText';
 
 class Container extends React.Component {
 
@@ -54,8 +55,7 @@ class Container extends React.Component {
   render(){
 
     return <div className="containerdiv">
-      <h2>Welcome to our Online Seed Store</h2>
-      <p>Feel free to look at our catalogue of tree seeds available</p>
+      <IntroText />
       <ProductCollection allProducts={this.getData()} navigateProduct={this.navigateProduct} addToCart = {this.props.addToCart}/>
     </div>
   }
