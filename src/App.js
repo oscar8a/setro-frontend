@@ -12,6 +12,7 @@ import Container from './containers/Container';
 import UserProfile from './components/UserProfile';
 import NotFound from './components/NotFound';
 import history from './history';
+import Catalogo from './catalogo/components/Catalogo.jsx'
 
 // const URL = 'http://localhost:3000/products/'
 
@@ -175,11 +176,7 @@ class App extends React.Component {
     return <Router history={history}>
       <BreakpointProvider>
         {
-          this.isLoggedIn()
-            ?
-            <header><Navigation logOutUser={this.logOutUser} /></header>
-            :
-            null
+          this.isLoggedIn() && <header><Navigation props logOutUser={this.logOutUser} /></header>
         }
         <Switch>
 
@@ -194,6 +191,8 @@ class App extends React.Component {
           <Route path="/profile" render={props => (<UserProfile {...props} />)} />
 
           <Route path="/cart" render={props => (<Cart {...props} cart={this.state.cart} updateCheckedOut={this.updateCheckedOut} />)} />
+
+          <Route path="/catalogo" render={props => <Catalogo />} />
 
           <Route path="*" component={NotFound} />
         </Switch>
