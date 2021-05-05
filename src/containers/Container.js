@@ -2,6 +2,8 @@ import React from 'react';
 import ProductCollection from '../components/ProductCollection';
 import Navigation from '../components/Navigation';
 import IntroText from '../components/Text/IntroText';
+import { connect } from 'react-redux';
+import { fetchProducts } from '../actions/productActions';
 
 class Container extends React.Component {
 
@@ -15,6 +17,7 @@ class Container extends React.Component {
 
   componentDidMount(){
     this.fetchAllData();
+    // this.props.fetchProducts();
   }
 
   fetchAllData = () => {
@@ -28,6 +31,7 @@ class Container extends React.Component {
     })
     .then(resp => resp.json())
     .then(data => {
+      console.log(data)
       this.setState({
         allProductsData: data
       })
@@ -60,4 +64,4 @@ class Container extends React.Component {
     </div>
   }
 }
-export default Container
+export default connect((state) => ({products: state.allProductsData}), {fetchProducts})(Container)
