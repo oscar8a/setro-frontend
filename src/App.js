@@ -1,7 +1,8 @@
 import React from 'react';
-import {Switch, Link, withRouter, Redirect, BrowserRouter as Router, Route} from 'react-router-dom';
+import { Switch, Link, withRouter, Redirect, BrowserRouter as Router, Route } from 'react-router-dom';
 import * as serviceWorker from './serviceWorker';
 import './App.css';
+import { Breakpoint, BreakpointProvider } from 'react-socks';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navigation from './components/Navigation';
 import Signup from './components/Signup';
@@ -11,6 +12,7 @@ import Container from './containers/Container';
 import UserProfile from './components/UserProfile';
 import NotFound from './components/NotFound';
 import history from './history';
+import Catalogo from './catalogo/components/Catalogo.jsx'
 
 // const URL = 'http://localhost:3000/products/'
 
@@ -25,7 +27,7 @@ class App extends React.Component {
     checkedOut: false,
   }
 
-  isLoggedIn(){
+  isLoggedIn() {
     return !!window.sessionStorage.getItem("token")
   }
 
@@ -52,12 +54,12 @@ class App extends React.Component {
         'Accept': 'application/json'
       }
     })
-    .then(resp => resp.json())
-    .then(data => {
-      this.setState({
-        cart: data
-      }, () => console.log("APP STATE", this.state))
-    })
+      .then(resp => resp.json())
+      .then(data => {
+        this.setState({
+          cart: data
+        }, () => console.log("APP STATE", this.state))
+      })
   }
 
   setCart = () => {
@@ -68,16 +70,16 @@ class App extends React.Component {
         'Content-Type': 'application/json'
       }
     })
-    .then(resp => resp.json())
-    .then(data => {
-      console.log("setCart Fetch",data)
-      this.setState({
-        cartID: data.id,
-        checkedOut: data.status,
+      .then(resp => resp.json())
+      .then(data => {
+        console.log("setCart Fetch", data)
+        this.setState({
+          cartID: data.id,
+          checkedOut: data.status,
+        })
+        window.sessionStorage.setItem("cartID", data.id)
+        this.fetchCartProducts();
       })
-      window.sessionStorage.setItem("cartID", data.id)
-      this.fetchCartProducts();
-    })
   }
 
   updateCartItemQty = (item) => {
@@ -94,12 +96,12 @@ class App extends React.Component {
         quantity: item.quantity
       })
     })
-    .then(resp => resp.json())
-    .then(data => {
-      this.setState({
-        cartTotal: this.state.cartTotal + 4.99
-      }, () => console.log(data, this.state))
-    })
+      .then(resp => resp.json())
+      .then(data => {
+        this.setState({
+          cartTotal: this.state.cartTotal + 4.99
+        }, () => console.log(data, this.state))
+      })
   }
 
   addItemsToOrder = (item) => {
@@ -116,17 +118,17 @@ class App extends React.Component {
         quantity: item.quantity
       })
     })
-    .then(resp => resp.json())
-    .then(data => {
-      if (data.errors) {
-        console.log(data.errors)
-      } else {
-      this.setState({
-        cartTotal: this.state.cartTotal + 4.99,
-        ...this.state.cart.push(data)
-      }, () => console.log(data, this.state))
-    }
-    })
+      .then(resp => resp.json())
+      .then(data => {
+        if (data.errors) {
+          console.log(data.errors)
+        } else {
+          this.setState({
+            cartTotal: this.state.cartTotal + 4.99,
+            ...this.state.cart.push(data)
+          }, () => console.log(data, this.state))
+        }
+      })
   }
 
   addToCart = (item) => {
@@ -144,9 +146,9 @@ class App extends React.Component {
         newQty = stateCartItem.quantity + 1;
         stateCartItem.quantity = newQty; //check this
         this.updateCartItemQty(stateCartItem);
-        return {...stateCartItem, quantity: newQty} //with this
-      } 
-      return {...stateCartItem}
+        return { ...stateCartItem, quantity: newQty } //with this
+      }
+      return { ...stateCartItem }
     })
 
     if (!containsItem) {
@@ -160,8 +162,8 @@ class App extends React.Component {
       checkedOut: true
     })
   }
-          
-  componentDidMount(){
+      
+  componentDidMount() {
     if (!!window.sessionStorage.getItem("token")) {
       this.setState({
         token: window.sessionStorage.getItem("token")
@@ -169,36 +171,32 @@ class App extends React.Component {
       this.setCart();
     }
   }
-              
-    render(){
-      return <Router history={history}>
-      {
-        this.isLoggedIn()
-        ?
-        <header><Navigation logOutUser={this.logOutUser}/></header>
-        :
-        null
-      }
-      <Switch>
 
-        <Route exact path="/" render={props => (<Login { ...props } logInUser={this.logInUser}/>)}/>
+  render() {
+    return <Router history={history}>
+      <BreakpointProvider>
+        {
+          this.isLoggedIn() && <header><Navigation props logOutUser={this.logOutUser} /></header>
+        }
+        <Switch>
 
-        <Route exact path="/login" render={props => (<Login { ...props } logInUser={this.logInUser}/>)}/>
+          <Route exact path="/" render={props => (<Login {...props} logInUser={this.logInUser} />)} />
 
-        <Route exact path="/signup" render={props => (<Signup { ...props } logInUser={this.logInUser}/>)} />
+          <Route exact path="/login" render={props => (<Login {...props} logInUser={this.logInUser} />)} />
 
-        <Route path="/home" render={props => (<Container { ...props } addToCart={this.addToCart}/>)}/>
+          <Route exact path="/signup" render={props => (<Signup {...props} logInUser={this.logInUser} />)} />
 
-        <Route path="/profile" render={props => (<UserProfile { ...props }/>)}/>
+          <Route path="/home" render={props => (<Container {...props} addToCart={this.addToCart} />)} />
 
-        <Route path="/cart" render={props => (<Cart { ...props } cart={this.state.cart} updateCheckedOut={this.updateCheckedOut}/>)} />
+          <Route path="/profile" render={props => (<UserProfile {...props} />)} />
 
+          <Route path="/cart" render={props => (<Cart {...props} cart={this.state.cart} updateCheckedOut={this.updateCheckedOut} />)} />
 
+          <Route path="/catalogo" render={props => <Catalogo />} />
 
-
-
-        <Route path="*" component={NotFound} />
-      </Switch>
+          <Route path="*" component={NotFound} />
+        </Switch>
+      </BreakpointProvider>
     </Router>
   }
 }

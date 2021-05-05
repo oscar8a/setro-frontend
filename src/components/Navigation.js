@@ -16,6 +16,9 @@ class Navigation extends React.Component {
   }
   
   render(){
+
+    console.log(this.props);
+
     return(<Navbar variant="dark" className='App-header'>
       <Navbar.Brand href="/"><span role='img' aria-label="pine and a nut">🌲🌰</span> Online Tree Seeds Store <span role='img' aria-label="pine and a nut">🌲🌰</span></Navbar.Brand>
       <Nav className="mr-auto">
