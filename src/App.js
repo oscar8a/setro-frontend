@@ -184,9 +184,13 @@ class App extends React.Component {
           }
           <Switch>
 
-            <Route exact path="/" render={props => (<Login {...props} logInUser={this.logInUser} />)} />
+            <Route exact path="/" >
+              <Login logInUser={this.logInUser} />
+            </Route>
 
-            <Route exact path="/login" render={props => (<Login {...props} logInUser={this.logInUser} />)} />
+            <Route exact path="/login" >
+              <Login logInUser={this.logInUser} />
+            </Route>
 
             <Route exact path="/signup" render={props => (<Signup {...props} logInUser={this.logInUser} />)} />
 
