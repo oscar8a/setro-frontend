@@ -14,6 +14,9 @@ import NotFound from './components/NotFound';
 import history from './history';
 import Catalogo from './catalogo/components/Catalogo.jsx'
 
+import store from './store';
+import { Provider } from 'react-redux';
+
 // const URL = 'http://localhost:3000/products/'
 
 class App extends React.Component {
@@ -160,9 +163,9 @@ class App extends React.Component {
   updateCheckedOut = () => {
     this.setState({
       checkedOut: true
-    })
-  }
-      
+    });
+  };
+
   componentDidMount() {
     if (!!window.sessionStorage.getItem("token")) {
       this.setState({
@@ -170,34 +173,40 @@ class App extends React.Component {
       });
       this.setCart();
     }
-  }
+  };
 
   render() {
-    return <Router history={history}>
-      <BreakpointProvider>
-        {
-          this.isLoggedIn() && <header><Navigation props logOutUser={this.logOutUser} /></header>
-        }
-        <Switch>
+    return <Provider store={store} >
+      <Router history={history}>
+        <BreakpointProvider>
+          {
+            this.isLoggedIn() && <header><Navigation props logOutUser={this.logOutUser} /></header>
+          }
+          <Switch>
 
-          <Route exact path="/" render={props => (<Login {...props} logInUser={this.logInUser} />)} />
+            <Route exact path="/" >
+              <Login logInUser={this.logInUser} />
+            </Route>
 
-          <Route exact path="/login" render={props => (<Login {...props} logInUser={this.logInUser} />)} />
+            <Route exact path="/login" >
+              <Login logInUser={this.logInUser} />
+            </Route>
 
-          <Route exact path="/signup" render={props => (<Signup {...props} logInUser={this.logInUser} />)} />
+            <Route exact path="/signup" render={props => (<Signup {...props} logInUser={this.logInUser} />)} />
 
-          <Route path="/home" render={props => (<Container {...props} addToCart={this.addToCart} />)} />
+            <Route path="/home" render={props => (<Container {...props} addToCart={this.addToCart} />)} />
 
-          <Route path="/profile" render={props => (<UserProfile {...props} />)} />
+            <Route path="/profile" render={props => (<UserProfile {...props} />)} />
 
-          <Route path="/cart" render={props => (<Cart {...props} cart={this.state.cart} updateCheckedOut={this.updateCheckedOut} />)} />
+            <Route path="/cart" render={props => (<Cart {...props} cart={this.state.cart} updateCheckedOut={this.updateCheckedOut} />)} />
 
-          <Route path="/catalogo" render={props => <Catalogo />} />
+            <Route path="/catalogo" render={props => <Catalogo />} />
 
-          <Route path="*" component={NotFound} />
-        </Switch>
-      </BreakpointProvider>
-    </Router>
+            <Route path="*" component={NotFound} />
+          </Switch>
+        </BreakpointProvider>
+      </Router>
+    </Provider>
   }
 }
 serviceWorker.unregister();
