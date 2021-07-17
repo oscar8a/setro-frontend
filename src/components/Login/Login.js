@@ -1,11 +1,11 @@
 import React from 'react';
-import { Redirect , withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
 
 class Login extends React.Component {
-  state ={
+  state = {
     logIn: false,
     email: "",
     password: "",
@@ -43,9 +43,11 @@ class Login extends React.Component {
   }
 
   onChange = event => {
-    console.log(this.state)
+    const name = event.target.name;
+    const value = event.target.value;
+    
     this.setState({
-      [event.target.name]: event.target.value
+      [name]: value
     })
   }
 

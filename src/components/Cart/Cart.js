@@ -81,8 +81,8 @@ class Cart extends React.Component {
     console.log("addtototal",this.state)
     let runningTotal = 0;
 
-    let itemObj = this.state.cart.forEach(cartItem => {
-      let itemProd = this.state.cartProducts.forEach(cartProd => {
+    this.state.cart.forEach(cartItem => {
+      this.state.cartProducts.forEach(cartProd => {
         if (cartItem.product_id === cartProd.id) {
           
           runningTotal = runningTotal + (cartItem.quantity * cartProd.price)

@@ -1,8 +1,9 @@
 import React from 'react';
-import { Switch, Link, withRouter, Redirect, BrowserRouter as Router, Route } from 'react-router-dom';
+import { Switch, BrowserRouter as Router, Route } from 'react-router-dom';
+// import { Switch, Link, withRouter, Redirect, BrowserRouter as Router, Route } from 'react-router-dom';
 import * as serviceWorker from './serviceWorker';
 import './App.css';
-import { Breakpoint, BreakpointProvider } from 'react-socks';
+import { BreakpointProvider } from 'react-socks';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navigation from './components/Navigation';
 import Signup from './components/Signup';
@@ -143,7 +144,7 @@ class App extends React.Component {
 
     let containsItem = false, newQty = 0;
 
-    const newCart = this.state.cart.map(stateCartItem => {
+    this.state.cart.map(stateCartItem => {
       if (stateCartItem.order_id === itemToAdd.order_id && stateCartItem.product_id === itemToAdd.product_id) {
         containsItem = true;
         newQty = stateCartItem.quantity + 1;
