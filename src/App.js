@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, BrowserRouter as Router, Route } from 'react-router-dom';
+import { Switch, Router, Route } from 'react-router-dom';
 // import { Switch, Link, withRouter, Redirect, BrowserRouter as Router, Route } from 'react-router-dom';
 import * as serviceWorker from './serviceWorker';
 import './App.css';
@@ -14,6 +14,7 @@ import UserProfile from './components/UserProfile';
 import NotFound from './components/NotFound';
 import history from './history';
 import Catalogo from './catalogo/components/Catalogo.jsx'
+import LandingPage from './pages/LandingPage';
 
 import store from './store';
 import { Provider } from 'react-redux';
@@ -35,7 +36,7 @@ class App extends React.Component {
     return !!window.sessionStorage.getItem("token")
   }
 
-  logInUser = (data) => {
+  _logInUser = (data) => {
     this.setState({
       user: data.user,
       token: data.token,
@@ -186,14 +187,14 @@ class App extends React.Component {
           <Switch>
 
             <Route exact path="/" >
-              <Login logInUser={this.logInUser} />
+              <LandingPage />
             </Route>
 
             <Route exact path="/login" >
-              <Login logInUser={this.logInUser} />
+              <Login logInUser={this._logInUser} />
             </Route>
 
-            <Route exact path="/signup" render={props => (<Signup {...props} logInUser={this.logInUser} />)} />
+            <Route exact path="/signup" render={props => (<Signup {...props} logInUser={this._logInUser} />)} />
 
             <Route path="/home" render={props => (<Container {...props} addToCart={this.addToCart} />)} />
 
