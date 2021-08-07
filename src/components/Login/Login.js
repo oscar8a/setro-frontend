@@ -1,18 +1,29 @@
 import React from 'react';
-import { Redirect , withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
 
+const Background = styled.div`
+  display: block;
+  background: url("https://cdn.pixabay.com/photo/2019/10/05/23/49/nature-4529056_1280.jpg")
+    no-repeat;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-color: rgba(154, 154, 154, 0.543);
+  background-blend-mode: screen;
+`;
+
 class Login extends React.Component {
-  state ={
+  state = {
     logIn: false,
     email: "",
     password: "",
     errors: []
   }
 
-  logInSubmit = e => {
+  _logInSubmit = e => {
     e.preventDefault()
 
     fetch('http://localhost:3000/login', {
@@ -43,23 +54,16 @@ class Login extends React.Component {
   }
 
   onChange = event => {
-    console.log(this.state)
+    const name = event.target.name;
+    const value = event.target.value;
+    
     this.setState({
-      [event.target.name]: event.target.value
+      [name]: value
     })
   }
 
   render() {
 
-    const Background = styled.div`
-      display: block;
-      background: url('https://cdn.pixabay.com/photo/2019/10/05/23/49/nature-4529056_1280.jpg') no-repeat;
-      width: 100%;
-      height: 100%;
-      background-size: cover;
-      background-color: rgba(154, 154, 154, 0.543);
-      background-blend-mode: screen;
-    `;
 
     return <>
     {/* <ul>
@@ -73,7 +77,7 @@ class Login extends React.Component {
             <h2>Login or Create a new User by clicking the signup form button</h2>
           </div>
           <section className="col-12 col-sm-3 col-md-4">
-            <Form className="authform login-form" onSubmit={this.logInSubmit}>
+            <Form className="authform login-form" onSubmit={this._logInSubmit}>
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
                 <Form.Control type="email" placeholder="Enter email" name="email" onChange={this.onChange} value={this.state.email} />

@@ -1,6 +1,6 @@
 import React from "react";
 import ProductCollection from "../components/ProductCollection";
-import Navigation from "../components/Navigation";
+// import Navigation from "../components/Navigation";
 import IntroText from "../components/Text/IntroText";
 import { connect } from "react-redux";
 import { fetchProducts } from "../actions/productActions";

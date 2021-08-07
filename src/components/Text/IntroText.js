@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Breakpoint } from 'react-socks';
 
 const IntroTextContainer = styled.div`
   padding: 5%;
